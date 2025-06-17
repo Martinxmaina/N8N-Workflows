@@ -1,0 +1,1100 @@
+{
+  "name": "portfolio scraper",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks"
+            }
+          ]
+        }
+      },
+      "id": "14e95497-45d7-4b4f-a89b-60c4b85e330e",
+      "name": "Weekly Scrape Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8",
+          "mode": "list",
+          "cachedResultName": "PE Firms",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1163999087,
+          "mode": "list",
+          "cachedResultName": "Qwen CSV June 12 2025",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit#gid=1163999087"
+        },
+        "options": {}
+      },
+      "id": "858d4b76-4e0b-419b-af69-c8cd3c989a42",
+      "name": "Get PE Firms List",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        380,
+        220
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "x2B65pXPKA0dNcvB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 2,
+        "options": {}
+      },
+      "id": "3d4a6519-1048-4de9-a744-2d69c3a05cc0",
+      "name": "Process in Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        600,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://s.jina.ai",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json.company_full_name }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "name": "X-Engine",
+              "value": "browser"
+            },
+            {
+              "name": "X-No-Cache",
+              "value": "true"
+            },
+            {
+              "name": "X-Site",
+              "value": "={{ $json.website }}"
+            },
+            {
+              "name": "X-Retain-Images",
+              "value": "none"
+            },
+            {
+              "name": "X-Site",
+              "value": "={{ $json.website }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "10d0cf8e-dce3-4f56-9695-da0143cd56de",
+      "name": "Scrape Main Website",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "id": "c9ae79bf-0f60-4ef3-9de5-fef2ece97d8d",
+      "name": "Rate Limit Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2800,
+        0
+      ],
+      "webhookId": "9235dea8-c758-4036-bddc-1ea1b46485e1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition1",
+              "leftValue": "={{ $('Process in Batches').context.noItemsLeft }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "bd050a95-2326-4a8d-b798-80825ba56b9a",
+      "name": "Check if Batch Complete",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2736,
+        295
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.output;\n\nfunction safeParse(input) {\n  try {\n    if (typeof input === 'string') return JSON.parse(input);\n    if (typeof input === 'object') return input;\n  } catch (e) {}\n  return null;\n}\n\nfunction joinArray(arr) {\n  return Array.isArray(arr) ? arr.join(', ') : '';\n}\n\nconst parsed = safeParse(raw);\nif (!parsed || Array.isArray(parsed)) return [];\n\nreturn [\n  {\n    json: {\n      type: \"investment_criteria\",\n      firm_name: parsed.firm_name || \"\",\n      investment_min: parsed.investment_min || null,\n      investment_max: parsed.investment_max || null,\n      industries: joinArray(parsed.industries),\n      geography: joinArray(parsed.geography),\n      stage_preference: joinArray(parsed.stage_preference),\n      ownership_preference: joinArray(parsed.ownership_preference),\n      aum_size: parsed.aum_size || null,\n      revenue_requirement: parsed.revenue_requirement || null,\n      annual_run_rate: parsed.annual_run_rate || null,\n      ebitda_requirement: parsed.ebitda_requirement || null,\n      business_model: joinArray(parsed.business_model),\n      founder_profile: joinArray(parsed.founder_profile),\n      esg_criteria: joinArray(parsed.esg_criteria),\n      exclusions: joinArray(parsed.exclusions),\n      check_size_by_round: joinArray(parsed.check_size_by_round),\n      exit_strategy: joinArray(parsed.exit_strategy),\n      holding_period: parsed.holding_period || null,\n      investment_focus: parsed.investment_focus || \"\",\n      special_criteria: parsed.special_criteria || \"\"\n    }\n  }\n];\n\n\n"
+      },
+      "id": "9195953f-2b83-4bf4-aaa4-89e0b7deca13",
+      "name": "Validate and Clean Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1860,
+        -80
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a private equity and venture capital analyst specializing in investment criteria analysis.\n",
+        "options": {
+          "systemMessage": "=## 🔍 Task  \nAnalyze the following text from a private equity or venture capital firm’s website or materials. Extract its **entire investment criteria** into a detailed and structured JSON format as outlined below.\n\n---\n\n## 📌 Extraction Rules\n\n- Only include details that are **explicitly stated** or **clearly implied** by the text.  \n- If a field is **not mentioned**, use:  \n  - `null` for text fields  \n  - `0` for numeric fields  \n  - `[]` for arrays  \n- Do **not hallucinate or assume** data.\n- Capture **even loosely mentioned** phrases (e.g., \"bridge rounds\", “diversity-led”, “willing to be flexible on revenue”) as structured values in relevant fields.\n\n---\n\n## ✅ Detectable Signals to Look For\n## 🔍 Task  \nAnalyze the following text from a private equity or venture capital firm’s website or materials. Extract its **entire investment criteria** into a detailed and structured JSON format as outlined below.\n\n---\n\n## 📌 Extraction Rules\n\n- Only include details that are **explicitly stated** or **clearly implied** by the text.  \n- If a field is **not mentioned**, use:  \n  - `null` for text fields  \n  - `0` for numeric fields  \n  - `[]` for arrays  \n- Do **not hallucinate or assume** data.\n- Capture **even loosely mentioned** phrases (e.g., \"bridge rounds\", “diversity-led”, “willing to be flexible on revenue”) as structured values in relevant fields.\n\n---\n\n## ✅ Detectable Signals to Look For\n\nInclude **any and all** of the following categories of investment criteria if present:\n\n### 🎯 FIRM IDENTIFICATION\n- \"firm_name\": \"{{ $('Get PE Firms List').item.json.company_name }}\"\n\n---\n\n### 💰 INVESTMENT SIZE & FINANCIAL PARAMETERS\n- \"investment_min\": \"Minimum investment size in USD millions/billions (e.g., 5)\"\n- \"investment_max\": \"Maximum investment size in USD millions/billions (e.g., 100)\"\n- \"check_size_typical\": \"Typical check size or sweet spot range\"\n- \"check_size_by_round\": [\"Check size ranges by funding round (e.g., $1-3M Seed, $5-10M Series A)\"]\n- \"enterprise_value_min\": \"Minimum enterprise value target\"\n- \"enterprise_value_max\": \"Maximum enterprise value target\"\n- \"transaction_value_range\": \"Total transaction value range they target\"\n\n---\n\n### 📊 FINANCIAL METRICS & THRESHOLDS\n- \"revenue_requirement\": \"Minimum revenue threshold in USD (e.g., $10M+)\"\n- \"revenue_max\": \"Maximum revenue they consider\"\n- \"annual_run_rate\": \"Annual revenue run rate requirement if explicitly stated (e.g., $1–5M)\"\n- \"ebitda_requirement\": \"Minimum EBITDA threshold (e.g., $3M+)\"\n- \"ebitda_margin\": \"Required EBITDA margin percentage\"\n- \"growth_rate\": \"Required revenue/EBITDA growth rate\"\n- \"profitability_requirements\": \"Profitability thresholds or break-even requirements\"\n- \"cash_flow_requirements\": \"Free cash flow generation requirements\"\n- \"recurring_revenue_percentage\": \"Required percentage of recurring revenue\"\n\n---\n\n### 🏢 COMPANY CHARACTERISTICS & STAGE\n- \"stage_preference\": [\"Company lifecycle stage (seed, early-stage, growth, expansion, late-stage, mature, buyout, distressed, turnaround, carve-out)\"]\n- \"company_age\": \"Preferred company age or maturity range\"\n- \"employee_count_range\": \"Target employee headcount range\"\n- \"market_position\": \"Market leadership or market share requirements\"\n- \"competitive_moat\": \"Required competitive advantages or differentiation\"\n\n---\n\n### 🏭 INDUSTRY & SECTOR FOCUS\n- \"industries\": [\"Primary industry sectors and detailed sub-sectors\"]\n- \"industry_themes\": [\"Thematic investment areas or macro trends\"]\n- \"technology_focus\": [\"Specific technologies or tech categories\"]\n- \"business_model\": [\"Preferred business models (SaaS, D2C, recurring revenue, franchising, marketplace, B2B, B2C)\"]\n- \"vertical_focus\": [\"Specific industry verticals or niches\"]\n\n---\n\n### 🌍 GEOGRAPHIC SCOPE\n- \"geography\": [\"Countries, regions or localities invested in (e.g., North America, DACH, Sub-Saharan Africa)\"]\n- \"headquarters_requirement\": \"Required company headquarters location\"\n- \"market_focus\": \"Developed, emerging, or frontier markets preference\"\n- \"local_presence_required\": \"Local office or operational presence requirements\"\n\n---\n\n### 📈 OWNERSHIP & CONTROL STRUCTURE\n- \"ownership_preference\": [\"Majority, minority, control, flexible, co-control\"]\n- \"equity_stake_min\": \"Minimum equity percentage sought\"\n- \"equity_stake_max\": \"Maximum equity percentage sought\"\n- \"control_requirements\": \"Board control, operational control, veto rights\"\n- \"board_seats\": \"Number of board seats typically sought\"\n- \"management_ownership\": \"Required management equity participation\"\n\n---\n\n### 🤝 DEAL STRUCTURE & TRANSACTION TYPES\n- \"transaction_types\": [\"Deal types (buyout, growth equity, recapitalization, add-on, platform, minority growth)\"]\n- \"deal_sourcing\": \"Preferred deal sourcing approach (proprietary, intermediated, auction)\"\n- \"co_investment_approach\": \"Co-investment or syndication preferences\"\n- \"follow_on_capacity\": \"Follow-on investment capabilities and approach\"\n- \"add_on_strategy\": \"Add-on acquisition strategy and approach\"\n\n---\n\n### 👥 MANAGEMENT & FOUNDER REQUIREMENTS\n- \"founder_profile\": [\"Founder characteristics (founder-led, diverse founders, serial founders, technical founders)\"]\n- \"founder_characteristics\": \"Specific founder or entrepreneur requirements\"\n- \"management_requirements\": \"Management team experience or background requirements\"\n- \"management_retention\": \"Management retention or partnership requirements\"\n- \"founder_involvement\": \"Required level of founder continued involvement\"\n\n---\n\n### 🌱 ESG & IMPACT CRITERIA\n- \"esg_criteria\": [\"ESG requirements (sustainability, DEI, carbon neutral, impact investing)\"]\n- \"diversity_requirements\": \"Diversity, inclusion, or minority-owned business preferences\"\n- \"impact_focus\": \"Specific impact investing themes or social outcomes\"\n- \"sustainability_requirements\": \"Environmental or sustainability criteria\"\n\n---\n\n### ⛔ EXCLUSIONS & RESTRICTIONS\n- \"exclusions\": [\"Industries or deal types excluded (fossil fuels, defense, crypto, tobacco, gambling)\"]\n- \"geographic_exclusions\": [\"Regions or countries excluded\"]\n- \"business_model_exclusions\": [\"Business models or structures avoided\"]\n- \"regulatory_restrictions\": \"Regulatory or compliance-related exclusions\"\n\n---\n\n### 💼 FUND & STRATEGY DETAILS\n- \"aum_size\": \"Fund size or AUM in USD (if available)\"\n- \"fund_focus\": \"Primary fund strategy or investment approach\"\n- \"investment_pace\": \"Number of investments per year or deployment timeline\"\n- \"portfolio_construction\": \"Target number of portfolio companies\"\n- \"concentration_limits\": \"Position sizing or concentration guidelines\"\n\n---\n\n### 🚪 EXIT & RETURN STRATEGY\n- \"exit_strategy\": [\"Preferred exit paths (IPO, strategic M&A, secondary buyout, dividend recap)\"]\n- \"holding_period\": \"Typical time horizon or duration of investment\"\n- \"return_targets\": \"Target return multiples or IRR if mentioned\"\n- \"exit_timeline\": \"Typical time to exit or liquidity events\"\n\n---\n\n### 🔧 VALUE CREATION & OPERATIONAL\n- \"value_creation_focus\": \"Primary value creation strategies or operational improvements\"\n- \"operational_involvement\": \"Level of operational support or hands-on involvement\"\n- \"portfolio_support\": \"Portfolio company support services or resources\"\n- \"industry_expertise\": \"Specific industry expertise or domain knowledge\"\n\n---\n\n### 🌟 SPECIAL CRITERIA & UNIQUE REQUIREMENTS\n- \"special_criteria\": \"Any unique requirements like HQ location, growth rate, team profile, etc.\"\n- \"partnership_approach\": \"Investment partnership philosophy or approach\"\n- \"competitive_advantages\": \"Firm's unique competitive advantages or differentiation\"\n- \"investment_philosophy\": \"Core investment philosophy or principles\"\n\n---\n\n### 🧪 TECHNICAL & INNOVATION FOCUS\n- \"technology_requirements\": \"Required technology stack, IP, or innovation focus\"\n- \"r_and_d_intensity\": \"R&D spending or innovation requirements\"\n- \"intellectual_property\": \"IP portfolio or patent requirements\"\n- \"digital_transformation\": \"Digital readiness or transformation requirements\"\n\n---\n\n### 👥 CUSTOMER & MARKET DYNAMICS\n- \"customer_base_requirements\": \"Customer concentration, quality, or diversification requirements\"\n- \"market_size_requirements\": \"Addressable market size or growth requirements\"\n- \"customer_retention\": \"Required customer retention rates or metrics\"\n- \"contract_characteristics\": \"Contract length, recurring nature, or stickiness requirements\"\n\n---\n\n\n\n---\n\n## 🧠 Output Requirement  \nReturn your findings in the following JSON format:\n\n```json\n{\n  \"firm_name\": \"{{ $('Get PE Firms List').item.json.company_full_name }}\",\n  \"investment_min\": \"\",\n  \"investment_max\": \"\",\n  \"check_size_by_round\": [],\n  \"enterprise_value_min\": \"\",\n  \"enterprise_value_max\": \"\",\n  \"equity_value_range\": \"\",\n  \"transaction_value\": \"\",\n\n  \"revenue_requirement\": \"\",\n  \"annual_run_rate\": \"\",\n  \"ebitda_requirement\": \"\",\n  \"aum_size\": \"\",\n  \n  \"ownership_preference\": [],\n  \"stage_preference\": [],\n  \"industries\": [],\n  \"industry_exclusions\": [],\n  \"business_model\": [],\n  \"sector_themes\": [],\n  \"technology_focus\": [],\n\n  \"geography\": [],\n  \"geographic_exclusions\": [],\n  \"market_focus\": \"\",\n  \"local_presence\": \"\",\n\n  \"transaction_types\": [],\n  \"deal_source\": \"\",\n  \"auction_preference\": \"\",\n  \"partnership_structure\": \"\",\n  \"holding_period\": \"\",\n  \"exit_strategy\": [],\n\n  \"founder_profile\": [],\n  \"founder_characteristics\": \"\",\n  \"company_age\": \"\",\n  \"employee_count\": \"\",\n  \"market_position\": \"\",\n  \"competitive_position\": \"\",\n\n  \"control_requirements\": \"\",\n  \"co_investment\": \"\",\n  \"follow_on_capacity\": \"\",\n  \"board_participation\": \"\",\n  \"management_ownership\": \"\",\n  \"operational_involvement\": \"\",\n  \"value_creation\": \"\",\n  \"management_requirements\": \"\",\n  \"founder_involvement\": \"\",\n\n  \"investment_focus\": \"\",\n  \"value_proposition\": \"\",\n  \"competitive_advantages\": \"\",\n  \"special_situations\": \"\",\n\n  \"esg_criteria\": [],\n  \"diversity_requirements\": \"\",\n  \"carve_out_experience\": \"\",\n  \"family_business\": \"\",\n  \"innovation_focus\": \"\",\n  \"regulatory_considerations\": \"\",\n  \"cyclicality_preference\": \"\",\n\n  \"structure_exclusions\": [],\n  \"geographic_restrictions\": [],\n  \"size_restrictions\": \"\",\n  \n  \"cash_flow_requirements\": \"\",\n  \"working_capital\": \"\",\n  \"capex_intensity\": \"\",\n  \"asset_light_heavy\": \"\",\n  \"recurring_revenue\": \"\",\n  \"customer_concentration\": \"\",\n  \"contract_duration\": \"\",\n\n  \"special_criteria\": \"\"\n}\n\n### 🧠 COMPREHENSIVE INVESTMENT THESIS\n\n { \"investment_focus\": \"Comprehensive 1-2 sentence summary of investment strategy and sweet spot\"\n- \"investment_thesis\": \"Detailed investment philosophy and approach\"\n- \"differentiation\": \"What makes this firm's approach unique or differentiated\"\n\n}\n{{ $json.data }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        -80
+      ],
+      "id": "77e44a45-1366-4958-a2de-ef5df8a034ac",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        60
+      ],
+      "id": "8ca2963d-6326-4857-85c4-ea859b9d3d82",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "EWRGwkRdNaf5jI6E",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are an expert at extracting portfolio company information from private equity firm websites. Always return valid JSON array.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=##task\nAnalyze the following text and extract all verified **portfolio companies** that this firm has invested in.\n\nOnly return companies that are:\n- Explicitly mentioned as current or past **portfolio companies**\n- Referenced in **investment-related context**, such as acquisitions, funding, or holdings\n- Clearly associated with the firm, not clients, advisors, partners, or general mentions\n\n📌 **Do not include**:\n- Team members\n- Advisory roles\n- Partners or co-investors\n- General market references\n\nFormat the extracted data as a JSON array in the following structure:\n\n[\n  {\n    \"company_name\": \"Company Name\",                     // Required, even if partial\n    \"industry\": \"Industry or sector (if known)\",        // Optional; leave \"\" if not mentioned\n    \"website\": \"https://companywebsite.com\",            // Optional; extract from link if present\n    \"investment_year\": \"Year of investment\",            // Optional; format: \"2020\"\n    \"status\": \"current\" or \"exited\",                    // Optional; use context like 'former', 'realized', or 'active'\n    \"description\": \"Brief summary of the company or why it was invested in\" // Optional; max 1–2 sentences\n  }\n]\n\n##Field Guidelines:\n- If any field is missing, use an **empty string** (`\"\"`) — not `null`.\n- Extract as many details as clearly available — even from linked pages, footnotes, or historical mentions.\n- Prioritize **precision over quantity** — avoid uncertain entries.\n\nNow process this content and return only the JSON array of portfolio companies:\n\n{{ $json.data }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        120
+      ],
+      "id": "52b25c04-f44b-4612-b150-f473ad4e5e39",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        220
+      ],
+      "id": "7cfa4aa6-e40d-412a-9e9e-8a946da91413",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "EWRGwkRdNaf5jI6E",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "[\n  {\n    \"company_name\": \"Company Name\",\n    \"industry\": \"\",\n    \"website\": \"\",\n    \"investment_year\": \"\",\n    \"status\": \"\",\n    \"description\": \"\"\n  }\n]\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1480,
+        400
+      ],
+      "id": "7f5bdbcb-d14c-4120-ba18-9d86edb7ba3d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are an expert at extracting team member information from private equity firm websites. Always return valid JSON array.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=##Task\nAnalyze the following content and extract only **actual team members** of the private equity firm.\n\nReturn the results as a JSON \n\n[\n  {\n    \"name\": \"Full Name\",                               // Required\n    \"title\": \"Job Title or Position (e.g., Managing Partner, Analyst)\",  // Optional\n    \"role_category\": \"Partner, Principal, Associate, Analyst, etc.\",     // Optional; infer from title if not stated\n    \"background\": \"Short professional bio or background (if provided)\",  // Optional\n    \"email\": \"Email address (if publicly available)\",                    // Optional\n    \"linkedin\": \"LinkedIn profile URL (if available)\"                    // Optional\n  }\n]\n\n📌 Guidelines:\n- Only include individuals who are **clearly identified** as team members, staff, advisors, or leadership.\n- **Exclude** portfolio companies, founders of investments, and external partners.\n- For \"role_category\", use best-fit values like: `Managing Partner`, `Partner`, `Principal`, `Associate`, `Analyst`, `Operating Partner`, `Advisor`, etc.\n- If a field is not present, use an empty string `\"\"`.\n\nNow analyze the following content and return the structured team member array:\n{{ $json.data }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        340
+      ],
+      "id": "13809753-e4de-4ca2-b073-12cc174200ef",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        560
+      ],
+      "id": "0440d37a-53f5-4cff-9d18-017e29f850d5",
+      "name": "OpenRouter Chat Model2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "EWRGwkRdNaf5jI6E",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"name\": \"\",\n    \"title\": \"\",\n    \"role_category\": \"\",\n    \"background\": \"\",\n    \"email\": \"\",\n    \"linkedin\": \"\"\n  }\n]\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1460,
+        560
+      ],
+      "id": "a88a069b-2807-40af-8c83-2b9df5e25823",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.output;\n\nfunction safeParse(input) {\n  try {\n    if (typeof input === 'string') return JSON.parse(input);\n    if (Array.isArray(input)) return input;\n  } catch (e) {}\n  return null;\n}\n\nconst parsed = safeParse(raw);\nif (!Array.isArray(parsed)) return [];\n\nreturn parsed.map(entry => ({\n  json: {\n    type: \"portfolio_company\",\n    ...entry\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1860,
+        120
+      ],
+      "id": "ef7bdcb3-7488-41db-9205-a9d8372b5975",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.output;\n\nfunction safeParse(input) {\n  try {\n    if (typeof input === 'string') return JSON.parse(input);\n    if (Array.isArray(input)) return input;\n  } catch (e) {}\n  return null;\n}\n\nconst parsed = safeParse(raw);\nif (!Array.isArray(parsed)) return [];\n\nreturn parsed.map(entry => ({\n  json: {\n    type: \"team_member\",\n    ...entry\n  }\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1880,
+        340
+      ],
+      "id": "5e8a8c5b-7a6d-416d-8ba9-c44e11e4d176",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8",
+          "mode": "list",
+          "cachedResultName": "PE Firms",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 876071207,
+          "mode": "list",
+          "cachedResultName": "portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit#gid=876071207"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Company name": "={{ $('Get PE Firms List').item.json.company_name }}",
+            "industry": "={{ $json.industry }}",
+            "website": "={{ $json.website }}",
+            "portfolio name": "={{ $json.company_name }}",
+            "status": "={{ $json.status }}",
+            "investment year": "={{ $json.investment_year }}",
+            "description": "={{ $json.description }}"
+          },
+          "matchingColumns": [
+            "portfolio name"
+          ],
+          "schema": [
+            {
+              "id": "Company name",
+              "displayName": "Company name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "portfolio name",
+              "displayName": "portfolio name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "industry",
+              "displayName": "industry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "investment year",
+              "displayName": "investment year",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2120,
+        120
+      ],
+      "id": "c2124ac3-6888-4306-a652-d0df2baba0da",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "x2B65pXPKA0dNcvB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8",
+          "mode": "list",
+          "cachedResultName": "PE Firms",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 365973009,
+          "mode": "list",
+          "cachedResultName": "Team",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit#gid=365973009"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.name }}",
+            "Position": "={{ $json.title }}",
+            "Linkedn": "={{ $json.linkedin }}",
+            "Email": "={{ $json.email }}",
+            "Background": "={{ $json.background }}",
+            "firm": "={{ $('Get PE Firms List').item.json.company_name }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "firm",
+              "displayName": "firm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Position",
+              "displayName": "Position",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Linkedn",
+              "displayName": "Linkedn",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Background",
+              "displayName": "Background",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2140,
+        340
+      ],
+      "id": "1a3b1503-f67b-4357-8b4c-89b583316e70",
+      "name": "Google Sheets2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "x2B65pXPKA0dNcvB",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2520,
+        120
+      ],
+      "id": "e7a07fcc-303f-4cd5-a990-82fc1f976ebf",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8",
+          "mode": "list",
+          "cachedResultName": "PE Firms",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 916110043,
+          "mode": "list",
+          "cachedResultName": "Investment Criteria",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_n1rZeBV0PMpm7-JUtS0M71ZSFsnFQPoEJ0w7VJCKo8/edit#gid=916110043"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Firm": "={{ $('Get PE Firms List').item.json.company_name }}",
+            "Investment_min": "={{ $json.investment_min }}",
+            "Investment_max": "={{ $json.investment_max }}",
+            "Industries ": "={{ $json.industries }}",
+            "Geography": "={{ $json.geography }}",
+            "Stage preference": "={{ $json.stage_preference }}",
+            "Investment Focus": "={{ $json.investment_focus }}",
+            "Ownership Preference": "={{ $json.ownership_preference }}",
+            "Aum size": "={{ $json.aum_size }}",
+            "Aunual Rate return": "={{ $json.annual_run_rate }}",
+            "Ebidta": "={{ $json.ebitda_requirement }}",
+            "Revenue Requirement": "={{ $json.revenue_requirement }}",
+            "Founder Profile": "={{ $json.founder_profile }}",
+            "Esg criteria": "={{ $json.esg_criteria }}",
+            "Special Criteria": "={{ $json.special_criteria }}",
+            "Holding period": "={{ $json.holding_period }}",
+            "Exit strategy": "={{ $json.exit_strategy }}",
+            "Executions": "={{ $json.exclusions }}"
+          },
+          "matchingColumns": [
+            "Firm"
+          ],
+          "schema": [
+            {
+              "id": "Firm",
+              "displayName": "Firm",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Investment_min",
+              "displayName": "Investment_min",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Investment_max",
+              "displayName": "Investment_max",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Industries ",
+              "displayName": "Industries ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Geography",
+              "displayName": "Geography",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Investment Focus",
+              "displayName": "Investment Focus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Stage preference",
+              "displayName": "Stage preference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ownership Preference",
+              "displayName": "Ownership Preference",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aum size",
+              "displayName": "Aum size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Revenue Requirement",
+              "displayName": "Revenue Requirement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Aunual Rate return",
+              "displayName": "Aunual Rate return",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ebidta",
+              "displayName": "Ebidta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Business Model",
+              "displayName": "Business Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Founder Profile",
+              "displayName": "Founder Profile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Esg criteria",
+              "displayName": "Esg criteria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Executions",
+              "displayName": "Executions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Exit strategy",
+              "displayName": "Exit strategy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Holding period",
+              "displayName": "Holding period",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Special Criteria",
+              "displayName": "Special Criteria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Column 1",
+              "displayName": "Column 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2120,
+        -100
+      ],
+      "id": "6e3da2d5-84cc-4eb5-ab22-18912b9dd3b2",
+      "name": "Portfolio",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "x2B65pXPKA0dNcvB",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Weekly Scrape Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get PE Firms List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PE Firms List": {
+      "main": [
+        [
+          {
+            "node": "Process in Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process in Batches": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Scrape Main Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate and Clean Data": {
+      "main": [
+        [
+          {
+            "node": "Portfolio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rate Limit Wait": {
+      "main": [
+        [
+          {
+            "node": "Check if Batch Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Batch Complete": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Process in Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Main Website": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Validate and Clean Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Sheets2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Rate Limit Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Portfolio": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "45837ab2-07fb-423a-a65b-5ebfb388907d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce885a748def26a3a154ebfb0ca74178a0d259a65d95aa1e9a2ae8abd6f28716"
+  },
+  "id": "wokzuF44G8VPPQAN",
+  "tags": [
+    {
+      "createdAt": "2025-06-12T23:22:38.885Z",
+      "updatedAt": "2025-06-12T23:22:38.885Z",
+      "id": "5wzWwUvhJG3nkcPy",
+      "name": "PE Database"
+    }
+  ]
+}
