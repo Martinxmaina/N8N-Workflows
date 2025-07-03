@@ -1,0 +1,1391 @@
+{
+  "name": "Advertorial Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Copy writer",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Enter the name of the product",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Website link",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Enter the screenshot of demographic",
+              "fieldType": "file",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Competitor",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Enter your url",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -2920,
+        1020
+      ],
+      "id": "0669a702-8ba1-4cfb-ae5a-e559f19a4dad",
+      "name": "On form submission",
+      "webhookId": "a0d7fc46-4084-4429-b457-a5e5b7e5be91"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## 📊 Step 1: Extract and Summarize Demographic Data from Image\n.\n\nYou’ve been given a screenshot from SimilarWeb that contains demographic and traffic analytics for a leading competitor.\n\n### Your Tasks:\n\n1. **Extract the demographic data** from the image and write it out as clean, natural language (not JSON).\n   - Example: “The majority of visitors are aged 25–34, followed by the 35–44 group.”\n   - “60% of the traffic is male.”\n   - “Most of the visitors come from the United States, Canada, and Germany.”\n\n2. End with **a one-paragraph summary** of what this demographic reveals about the brand’s core audience:\n   - What type of lifestyle might they live?\n   - What digital behavior or psychographic traits can be inferred?\n\nKeep your output in **plain, readable English** — no code or formatting.\n\nwrite only 2 lines with every details. should not contain any json or md format just a plain text.\n\n#STRICT RULE\n-THE OUTPUT SHOULD NOT not contain this \\n",
+        "options": {
+          "systemMessage": "You are a skilled data analyst and market researcher"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -2700,
+        1020
+      ],
+      "id": "7de17380-39a0-4c28-8414-9eaa83d3e470",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=##Task\nYour task is to identify and articulate the dual unique mechanisms for this product or service.\n\n\nWhen analyzing product , follow this framework:\n##STEP 1\n- Identify the REAL underlying reason why the target audience keeps failing\n- Focus on the \"missing piece\" they don't understand about their problem\n- Explain why their current knowledge/approach is incomplete\n- Address why past solutions failed (didn't work, worked partially, or worked temporarily)\n## STEP 2\n- Identify the unique mechanism that makes THIS solution different\n- Explain how it addresses the root cause other solutions missed\n- Show the logical connection between the problem mechanism and solution mechanism\n- Position this as the \"one crucial piece of information\" they've been missing\n\n##STEP 3: Two-Part Logical Bridge**\n- Create a clear cause-and-effect relationship: \"You've been struggling because [Problem Mechanism], but our solution works because [Solution Mechanism]\"\n- Make the prospect think: \"That's why nothing else worked!\"\n- Build belief that this solution will succeed where others failed\n\n**Output Format:**\n- Problem Mechanism: [The real reason they keep failing]\n- Solution Mechanism: [How your product uniquely solves the root cause]\n- Logical Bridge: [One sentence connecting both mechanisms]\n\n**Remember:** Your goal as a copywriter is to educate our prospect about the REAL reason why past solutions didn’t bring them permanent results. You do this by explaining that their knowledge about the problem is incomplete. They’ve been missing ONE CRUCIAL PIECE OF INFORMATION, and this “knowledge gap” is what’s been holding them back.\n\n##DATA\n\nyou are using this data extracted which show case pain points {{ $json.choices[0].message.content }}",
+        "options": {
+          "systemMessage": "=You are a copywriting strategist specializing in the RMBC Method"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1444,
+        1020
+      ],
+      "id": "0315021d-4678-47d2-9b88-a4205f1c0092",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "content": "## Training the AI to be A Copywriter \n",
+        "height": 620,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1440,
+        760
+      ],
+      "id": "c13b3ba5-3c53-494e-9672-2ef3c47fac40",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Analyizng the urls \n\n\nThis node analyzes the urls with gpt 4.1/claude 4 sonnet",
+        "height": 620,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1740,
+        760
+      ],
+      "id": "e6cdd0a3-4a82-48b1-9a47-8df73a717502",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Extracts the URLS\n-Looks for stories about 'rock-bottom' moments, emotional tipping points, or obsessive worries related to the problem\n-Finds 20 public discussion forum posts (e.g. Reddit) from people in our competitor’s dominant customer demographic where they talk in detail about the emotional pain, frustration, fear, or anxiety caused by the underlying problem that the given  product solves—not the product itself.\n",
+        "height": 620,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2320,
+        760
+      ],
+      "id": "62d302b4-1f1d-478e-b6d8-c7897c27a2ad",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ANALYZES THE DEMOGRAPHICS",
+        "height": 620,
+        "width": 400,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2720,
+        760
+      ],
+      "id": "b0f32258-1c36-4f0e-aecf-e8c829fefc20",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Identifying the Dominant Mass Desires ",
+        "height": 620,
+        "width": 380,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        760
+      ],
+      "id": "338d2684-7067-4da8-a1bc-617d82ffd336",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Task:**  \nAnalyze everything provided about the target audience’s emotional state, frustrations, and internal struggles. Then identify **5 of the most dominant mass desires** that [{{ $('On form submission').item.json['Enter the name of the product'] }}] fulfills for this audience.\n\nEach desire must be phrased using the structure:  \n**“The desire to [{{ $('On form submission').item.json['Enter the name of the product'] }}].”**\n\n### Guidelines:\n- Do **not** use em dashes or combine multiple wants in a single desire.\n- Each desire must be **distinct, singular, and emotionally specific**.\n- Avoid surface-level product features — focus on the deeper emotional or psychological **drives behind the purchase**.\n- Think in terms of **identity, status, autonomy, relief, transformation, or belonging** — not just utility.\n\n---\n\n### Definition – What Is a Mass Desire?\n\n> “Mass desire is the shared public yearning for something individuals already crave. Copy cannot create desire — it can only **channel existing hopes, fears, and ambitions** toward a product.”  \n> – Eugene Schwartz, *Breakthrough Advertising*\n\nMost successful products channel 2–4 dominant mass desires. We want you to surface the **emotional truth** behind why the customer is drawn to [{{ $('On form submission').item.json['Enter the name of the product'] }}].\n\n---\n\n### Output Format:\nReturn a clean list of **exactly 5 mass desires**, each starting with:\n\n**“The desire to…”**\n\nEach should represent a **unique, emotionally compelling motivation**.\n{{ $('Perplexity1').item.json.choices[0].message.content }}",
+        "options": {
+          "systemMessage": "=You are a senior copywriter and customer psychologist trained in the principles of Eugene Schwartz's *Breakthrough Advertising*. Your expertise lies in identifying deep, emotionally driven mass desires that fuel buyer motivation."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1068,
+        1020
+      ],
+      "id": "8a7e4098-cc49-4319-8e5b-acbfcd8e3e8c",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -2612,
+        1240
+      ],
+      "id": "c8a6ec71-533e-4597-91b0-905ea7edee5d",
+      "name": "OpenRouter Chat Model2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "heFEr6My8BqwIv2x",
+          "name": "OpenRouter - Keenen New"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Creating the Desire Testing Ad Copy",
+        "height": 620,
+        "width": 360,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        760
+      ],
+      "id": "04c68817-98ec-4c10-8ee4-cf4a3ca39b9a",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Angle",
+        "height": 620,
+        "width": 380,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        760
+      ],
+      "id": "eb9e7f49-5bff-4048-ae2f-a78f2a018ee0",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Angle + persona",
+        "height": 620,
+        "width": 820,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        186,
+        760
+      ],
+      "id": "15a1ae03-7bda-42ad-8f92-f6ee178010d0",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# 🎯 MASTER ADVERTORIAL WRITING PROMPT\n\n## CRITICAL SUCCESS REQUIREMENTS\n\n**Length:** 900-1,200 words (NOT longer - match proven length)\n**Reading Level:** 5th grade maximum (use simple words, short sentences)\n**Format:** Customer testimonial story (NOT company selling)\n**Tone:** Conversational, emotional, urgent but helpful\n\n---\n\n## 📖 NARRATIVE ANGLE TO USE:\n{{ $json.output1 }}\n\n## 🏗️ MANDATORY STRUCTURE: RMBC FRAMEWORK\n\n### **OPENING HOOK** (NON-NEGOTIABLE)\n- **ONE short sentence only (6-12 words maximum)**\n- Must cut to core pain/fear immediately\n- Create instant emotional impact\n- Example format: \"Max was dying, and it was my fault.\"\n\n### **LEAD SECTION**\n- Call out problem with statistics/urgency\n- Promise solution + tease discovery story  \n- Hint at unique mechanism (contrarian/surprising)\n- Brief credibility builders\n- Qualify the audience (\"If you're struggling with...\")\n\n### **BACKGROUND STORY**\n- **Customer narrator perspective** (NOT company owner)\n- \"I was just like you\" connection\n- Show traditional solutions failing\n- Include trigger event/crisis moment\n- Describe search for answers\n\n### **UNIQUE MECHANISM OF PROBLEM**\n- Reveal surprising/counterintuitive explanation\n- \"99% of people know this, but the missing 1% is...\"\n- Include scientific backing for credibility\n- Make it feel like insider knowledge\n\n### **UNIQUE MECHANISM OF SOLUTION**\n- Create logical connection to the problem\n- Explain specific methodology/technology\n- Show why this works when others fail\n- Build anticipation for the reveal\n\n### **PRODUCT BUILDUP + REVEAL**\n- Customer discovered [{{ $('On form submission').item.json['Enter the name of the product'] }}] through research\n- Share testing and results story\n- Provide proof it actually works\n- Mention others asking about it\n\n### **CLOSE SECTION**\n- Product details and key differentiators\n- Social proof and testimonials\n- Create urgency/scarcity\n- Include guarantee\n- Justify the investment\n- Multiple strong CTAs\n- End with two-choice close\n\n---\n\n## ✍️ WRITING STYLE REQUIREMENTS\n\n### **Sentence Structure:**\n- Keep most sentences under 15 words\n- Use simple vocabulary (5th grade level)\n- Break complex ideas into multiple short sentences\n- Vary sentence length for natural rhythm\n\n### **Paragraph Format:**\n- 1-3 sentences maximum per paragraph\n- Lots of white space for easy scanning\n- Mobile-friendly formatting\n\n### **Headlines Throughout:**\n- Create curiosity and promise benefits\n- Avoid starting with \"The\"\n- Make compelling, not just descriptive\n- Example: \"How A $3,200 Emergency Saved My Cat's Life\"\n\n---\n\n## 🎯 STRATEGIC BOLDING FOR SCANNABILITY\n\n**Bold these elements:**\n- Key statistics and shocking numbers\n- Major revelations and \"aha moments\"\n- Solution benefits and transformation results\n- Urgency and scarcity elements\n- Guarantee terms and risk reversal\n- Call-to-action phrases\n\n---\n\n## 👥 CUSTOMER STORY FORMAT RULES\n\n- **Narrator is a CUSTOMER** who discovered the product (NOT the seller)\n- Customer is sharing their story to help others\n- Product is made by a separate company\n- CTAs should say \"check availability\" not \"we're offering\"\n- Maintain authentic, helpful tone throughout\n\n---\n\n## 🧠 CORE PSYCHOLOGICAL TRIGGERS TO HIT\n\nFocus on these 3 mass desires:\n1. **Prevention of Crisis:** Help them avoid disaster/emergency/loss\n2. **Peace of Mind:** Eliminate their worry and uncertainty\n3. **Understanding:** Reveal the real reason behind their problems\n\n---\n\n## 📝 PAIN → AGITATE → SOLUTION FLOW\n\n### **PAIN:**\n- Identify core emotional pain point\n- Make it feel personal and relatable\n- Connect to identity and self-worth\n\n### **AGITATE:**\n- Deepen emotional tension with consequences\n- Share embarrassing moments or setbacks\n- Show social limitations and internal conflict\n- Make the cost of inaction feel unbearable\n\n### **SOLUTION:**\n- Introduce discovery moment organically\n- Present [{{ $('On form submission').item.json['Enter the name of the product'] }}] casually\n- Explain transformation realistically\n- Transition naturally to hope and resolution\n\n---\n\n## 🚀 FINAL CHECKLIST FOR 100% SCORE:\n\n✅ Opens with 6-12 word emotional hook\n✅ Customer testimonial format (not company pitch)\n✅ All RMBC sections included in order\n✅ 900-1,200 words exactly\n✅ 5th grade reading level maintained\n✅ Strategic bolding applied throughout\n✅ Multiple compelling headlines\n✅ Strong CTAs with urgency\n✅ Authentic, conversational tone\n✅ Product introduction feels natural and embedded\n✅ Addresses all 3 core mass desires\n✅ Mobile-friendly paragraph structure\n\n---\n\n**PRODUCT BEING PROMOTED:**\n[{{ $('On form submission').item.json['Enter the name of the product'] }}]\n\n**Remember:** Make this feel like a real person sharing their discovery story to help others, NOT a company trying to sell something. The product introduction should feel casual and naturally woven into the narrative, never forced or pitch-like.",
+        "options": {
+          "systemMessage": "=You are a skilled copywriter trained in crafting emotionally compelling, story-driven Facebook advertorials that feel natural, authentic, and deeply personal — never like marketing.\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        280,
+        1020
+      ],
+      "id": "dcfad00e-e911-4612-8208-897c0c18049f",
+      "name": "AI Agent6"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Access the message content from the first choice\nconst content = items[0].json.choices[0].message.content;\n\n// Use regex to extract all URLs from the text\nconst urls = content.match(/https:\\/\\/[^\\s)]+/g) || [];\n\nreturn [\n  {\n    json: {\n      urls\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1884,
+        1020
+      ],
+      "id": "036e2984-4b83-4c33-884b-6a9026226f7b",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Cleans the data\nCleans the urls and format them in form of string/text ",
+        "height": 620,
+        "width": 180,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1920,
+        760
+      ],
+      "id": "5bcb6548-fc5b-4cfb-b9c7-124b433913a9",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**🛠 Task:**  \nBased on your research and understanding of the audience’s emotional state — especially from the forum posts and mass desires identified earlier \n\n##goal 1\n— write a **1,200–1,400 word advertorial-style Facebook ad**.\n\n---\n\n#Your Goal:\n\nCreate a **first-person story-based ad** that targets our audience emotionally and subtly sells the value of product ({{ $('On form submission').item.json['Enter the name of the product'] }}) as the ideal solution.\n\nWe want to **embed these mass desires into the story structure**:\n\n**[{{ $json.output }}]**\nPick the best desire\n\n---\n\n### ✍️ Writing Guidelines:\n\n- Use a **first-person narrative** written at a **5th-grade reading level**.\n- The tone should be **genuine, conversational, and emotionally authentic** — not polished “marketing” speak.\n- Use **the exact language, slang, expressions, fears, and struggles** found in the Reddit/forum research — this should feel like something the reader could have written themselves.\n- Follow a **“slippery slope” style** where the reader is pulled naturally from one line to the next without friction.\n- Focus on **emotional triggers, identity conflict, and breakthrough moments.**\n\n---\n\n### 🧱 Structure You Must Follow:\n\n1. **📢 Hook**  \n   - Start with a **curiosity-driven, emotionally loaded hook** that directly calls out the target audience.\n   - It should immediately identify their pain or frustration in a way that feels “seen.”\n\n2. **😣 Pain + Agitate**  \n   - Share a relatable story that digs into the **emotional struggle**, shame, confusion, or tipping point moment.\n   - Use storytelling to **amplify the emotional cost** of the problem — how it impacts lifestyle, identity, relationships, self-worth, etc.\n\n3. **🕵️‍♀️ Discovery Moment**  \n   - Introduce a turning point: a conversation, friend recommendation, or moment that opened their eyes to something new.\n\n4. **✨ Solution = [{{ $('On form submission').item.json['Enter the name of the product'] }}]**  \n   - Reveal how they discovered the product ({{ $('On form submission').item.json['Enter the name of the product'] }}) — and what made it different.\n   - Use a **unique mechanism behind the problem** (why traditional shoes don’t work), and a **unique mechanism behind the solution** ( {{ $('On form submission').item.json['Enter the name of the product'] }}*actually* work).\n\n5. **✅ Transformation + Result**  \n   - Show the transformation after using the product — mentally, emotionally, physically.\n   - Focus on how it satisfies the emotional **mass desires** you listed earlier.\n\n6. **🎯 Call to Action**  \n   - End with a soft, friendly invitation to check it out — not pushy or salesy. Just honest recommendation.\n\n---\n\n### writing format\n\nWrite a heartfelt, first-person narrative from a customer who experienced a terrifying or emotionally overwhelming situation caused by the **underlying problem** that [{{ $('On form submission').item.json['Enter the name of the product'] }}] is designed to solve.\n\nFollow this structure:\n\n1. **Opening Hook**  \n   Begin with an emotionally intense or mysterious moment that pulls the reader in (e.g., a quote from a doctor, a panicked middle-of-the-night scene, a gut feeling that something’s wrong).\n\n2. **Life Before the Problem**  \n   Briefly describe what life was like before things changed. Everything seemed fine, happy, or normal.\n\n3. **Subtle Warning Signs**  \n   Mention early symptoms or red flags that were easy to dismiss.\n\n4. **The Breaking Point / Emergency**  \n   A moment of crisis: panic, rushing to the vet/doctor, emotional overwhelm. Highlight fear, guilt, helplessness.\n\n5. **Diagnosis & Emotional Realization**  \n   A professional explains what happened. The narrator feels ashamed, surprised, or heartbroken that it could’ve been prevented.\n\n6. **Education on the Real Cause**  \n   Reveal the underlying cause of the problem in a way that’s unexpected or eye-opening. Use storytelling and metaphor.\n\n7. **Discovering [{{ $('On form submission').item.json['Enter the name of the product'] }}]**  \n   The narrator stumbles on the solution during desperate research or through another customer’s story.\n\n8. **Skepticism Turns to Hope**  \n   They try it cautiously, unsure if it will work—but they're desperate.\n\n9. **The Transformation**  \n   Within hours or days, visible change begins. Emotional shift. Signs of healing or resolution.\n\n10. **Professional Validation**  \n    A follow-up checkup shows dramatic improvement. The vet/doctor is surprised.\n\n11. **Life After [product]**  \n    A comparison to before: peace of mind, health restored, emotional relief, financial savings.\n\n12. **Emotional Close & CTA**  \n    End with a powerful reflection or warning:  \n    *“Don’t wait until it’s too late.”*  \n    *“I wish I’d known sooner.”*  \n    *“Every day you wait increases the risk.”*\n\n---\n\n### ✅ Writing Requirements:\n\n- Use a **natural, emotionally expressive first-person voice**\n- Include **vivid sensory details**: time of day, sounds, dialogue, internal panic, relief\n- Emphasize **emotions**: guilt, fear, helplessness, love, gratitude, hope\n- Use **conversational storytelling**, not marketing-speak\n- Technical info should come from a vet/doctor as quoted dialogue\n- Final message should be emotionally persuasive, not salesy\n\n### 📝 Output Format:\n\n- The output should be one continuous **first-person story ad**, broken into small, digestible paragraphs.\n- Write in a “scroll-stopping” format suitable for Facebook — bold lines, emotional punch, easy flow.\n- Target word count: **1,200–1,**\n\nExample:\n\n",
+        "options": {
+          "systemMessage": "=You are a world-class direct response copywriter and brand storyteller. Your expertise lies in writing long-form, first-person Facebook ad copy in the style of native advertorials that convert emotionally-driven audiences. You deeply understand how to translate research and emotional pain into persuasive storytelling."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -692,
+        1020
+      ],
+      "id": "cfb06a63-3ac6-4134-9d60-c4b17412f3a8",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -604,
+        1240
+      ],
+      "id": "a2183473-cec3-4397-88e1-27023f107560",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "heFEr6My8BqwIv2x",
+          "name": "OpenRouter - Keenen New"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are an elite copy strategist and emotional narrative analyst. You help brand teams and advertisers identify which emotional angle a story is using to sell a product — and how that maps to a core mass desire.",
+        "options": {
+          "systemMessage": "=🎯 Task:\nYou've been provided with a complete first-person Facebook advertorial (see below). Your task is to:\n\n1. Identify the primary emotional story angle.\nWhat emotional theme or situation is the story built around?\n\nWhat is the emotional low point or turning moment?\n\nWhat pain or fear is being expressed?\n\nWho is the \"before\" character, and what identity shift occurs?These angles should appeal to the deep fears, pain points, and lived circumstances that your target customer is actively trying to avoid.\n\nThe angle is the emotional story we use to sell the product — and the more accurate it is to real people’s experiences, the more powerful and persuasive it becomes.\n\nThink in terms of “rock bottom” moments — when the cost of staying the same finally becomes greater than the fear of change. These are moments of emotional tipping points, where people are pushed to seek transformation or relief.\n\n🧠 Goal:\n\nMap the story to a dominant mass desire.\nPick only one mass desire that is most central to this advertorial.\n\nPhrase the desire clearly, like this:\n“The desire to [clear single emotional want].”\n\n✅ Output Format:\nAngle Summary:\n[Your 1–2 sentence explanation of the emotional angle used in the advertorial.]\n\nMapped Mass Desire:\nThe desire to [ ... ]\n\nthis is the context\n{{ $json.output }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        1020
+      ],
+      "id": "b58d76e5-5ac2-456b-9ff5-497fe3555b76",
+      "name": "AI Agent5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# TESTIMONIAL ADVERTORIAL GENERATION PROMPT\n\n## TARGET SPECIFICATIONS\n**Length:** 900-1,200 words ()\n**Reading Level:** 5th grade maximum\n**Structure:** Customer testimonial story format (NOT company selling)\n**Tone:** Conversational, emotional, urgent but helpful\n\n## CRITICAL FRAMEWORK REQUIREMENTS\n\n### OPENING HOOK\n- Start with ONE short, punchy sentence that cuts to core emotional pain/fear\n- Example: \"I felt invisible until I changed one thing.\"\n- Should be 6-12 words maximum\n- Must create immediate visceral impact that stops the scroll\n\n### RMBC STRUCTURE (NON-NEGOTIABLE)\n\n**R - Lead (Problem + Promise):**\n- Open with emotional hook sentence\n- Call out problem with shocking statistics/urgency\n- Promise unexpected solution + tease discovery story\n- Hint at surprising/contrarian mechanism\n- Qualify audience (\"If you've ever felt...\")\n\n**M - Background Story (Customer Journey):**\n- Customer narrator sharing their struggle (NOT company owner)\n- \"I was just like you\" deep connection moments\n- Specific scenes of traditional solutions failing\n- Rock-bottom crisis/breaking point moment\n- Desperate search for answers/truth\n\n**B - Unique Mechanism Reveal (The \"Why\"):**\n- Surprising/counterintuitive explanation of the real problem\n- \"Most people think X, but the truth is Y...\"\n- Scientific backing or credibility elements\n- The missing piece everyone overlooks\n\n**C - Solution Discovery + Results:**\n- How customer discovered the product (through friend/research)\n- Initial skepticism followed by testing\n- Specific transformation results and proof\n- Others noticing the change and asking about it\n\n### HEATH WILCOCK PAS EMOTIONAL ARC\n- **Pain:** Extract raw emotional suffering and specific scenarios\n- **Agitate:** Make the cost of inaction feel unbearable\n- **Solution:** Present the breakthrough discovery and dramatic results\n\n### PRODUCT REVEAL SECTION\n- Customer discovered through recommendation or research\n- Initial doubt/skepticism (\"This seemed too good to be true...\")\n- Testing phase and immediate results\n- Ongoing transformation and social proof\n- Others asking \"What changed?\" or requesting recommendations\n\n### CLOSING ELEMENTS\n- Product details and key differentiators\n- Social proof from other customers\n- Urgency/scarcity elements\n- Risk-free guarantee\n- Price justification (\"Worth every penny because...\")\n- Multiple CTAs throughout\n- Two-choice close (\"Click now or stay stuck\")\n\n## WRITING STYLE REQUIREMENTS\n\n**Sentence Structure:**\n- Keep most sentences under 15 words\n- Use simple, emotional vocabulary (5th grade level)\n- Break complex ideas into multiple short sentences\n- Vary sentence length for natural rhythm\n\n**Paragraph Format:**\n- 1-3 sentences maximum per paragraph\n- Lots of white space for easy scanning\n- Each paragraph advances the emotional story\n\n**Headlines Throughout:**\n- Create curiosity gaps and promise benefits\n- Avoid starting with \"The\"\n- Make them compelling story beats, not topic labels\n- Examples: \"The Crisis That Changed Everything\" / \"What I Discovered About [Problem]\"\n\n## BOLDING FOR SCANNABILITY\nBold these critical elements:\n- Shocking statistics and key numbers\n- Emotional breakthrough moments\n- Solution benefits and transformation results\n- Urgency/scarcity phrases\n- Guarantee terms and risk-reversal\n- Strong call-to-action phrases\n- Key mechanism reveals\n\n## CUSTOMER STORY AUTHENTICITY\n- Narrator is always a CUSTOMER who discovered the product\n- NEVER the company owner, seller, or marketer\n- Sharing their personal transformation story to help others\n- Product is made by a separate company they discovered\n- CTAs direct to \"check availability\" not \"we're selling\"\n- Include specific details that make the story feel real\n\n## MASS DESIRES TO TARGET\nFocus on these core human drives:\n1. **Escape Invisible Pain:** Stop feeling overlooked, ignored, or inadequate\n2. **Transformation Story:** Become the person others notice and respect\n3. **Social Proof:** Join others who've discovered this \"secret\"\n4. **Avoid Regret:** Don't miss out on the solution that could change everything\n\n## INPUT PROCESSING REQUIREMENTS\n\nExtract and transform the following from your input data:\n\n```\n\n### Advertorial Requirements:\nWrite a complete 900-1,200 word customer testimonial advertorial that:\n- Follows exact RMBC structure with emotional PAS flow\n- Maintains 5th grade reading level throughout\n- Uses strategic bolding for scannability\n- Opens with powerful 6-12 word emotional hook\n- Includes compelling headlines as story beats\n- Features authentic customer discovery narrative\n- Ends with multiple strong CTAs and two-choice close\n- Extracts and leverages the deepest emotional pain points from the input\n- Transforms dry product features into visceral transformation stories\n\n## SUCCESS CRITERIA\nThe final advertorial should:\n1. Make the target audience feel \"This person understands my exact pain\"\n2. Create urgency through emotional cost of inaction\n3. Present the solution as an unexpected discovery, not a sales pitch\n4. Include specific, believable details that make the story feel authentic\n5. Drive immediate action through multiple compelling CTAs\n6. Follow the proven structure of top-performing testimonial ads\n\n## INPUT REQUIREMENTS\nProvide:\n- Product name and description{{ $('On form submission').item.json['Enter the name of the product'] }}\n- Target audience {{ $('AI Agent4').item.json.output }}\n- extract:{Main problem it solves, \nUnique mechanism/angle ,Key benefits,Price point, Any specific claims/studies} from ({{ $json.output }})\n\nDeliver a complete advertorial following the exact structure and style of the provided examples, ensuring:\n- Proper customer testimonial format\n- All RMBC elements included\n- 5th grade reading level\n- Strategic bolding applied\n- Strong emotional hook opening\n- Compelling headlines throughout\n- Multiple strong CTAs\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "= Task:\nWrite a 900–1,200 word long-form customer testimonial-style advertorial following the RMBC structure, PAS emotional arc, and customer discovery narrative — specifically formatted for Facebook Ads and inspired by top-performing ads from brands like 1TAC.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        656,
+        1020
+      ],
+      "id": "00372720-422b-4653-96c0-5157f5d1fd3a",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "content": "## SENDING THE HTML TO GMAIL",
+        "height": 600,
+        "width": 920,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2380,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "bbd18643-30f3-4dbd-8abd-ac39bfcf4c53",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "= AI Prompt for JSON-Powered Long-Form Advertorials\nNightmare → Discovery → Solution → \n\n##TASK\n\nYour job is to populate structured JSON templates that feed into an automated marketing content pipeline. These templates power dynamic web pages, emails, and landing pages.\n\n🔧 Prompt Objective\nPopulate the values in the following JSON structure using rich, story-driven copywriting based on:\n\nThe user’s core narrative:\n{{ $json.output }}\n\nThe user’s marketing angle:\n\n{{ $('AI Agent6').item.json.output }}\n\n\n🧠 Writing Requirements\nNever change or rename any JSON keys.\nOnly provide story-rich, emotionally resonant values for each key.\n\nWrite as if for a high-performing, native-style advertorial.\nThink: BuzzFeed x Facebook x Dr. Axe.\n\nYour tone should be:\n\nNatural, relatable, and vivid\n\nEmotional, engaging, and visceral\n\nConversion-focused, yet authentic\n\nHuman-first, with realistic testimonials and inner monologue\n\n✍️ Style Rules\nUse techniques proven to boost conversion:\n\nShort sentences that punch.\n\nQuotes and internal thoughts (“I just wanted to feel normal again.”)\n\nHooks that spark curiosity.\n\nRelatable characters with transformation arcs.\n\nEveryday voice, no corporate tone.\n\nUse vivid specifics, not abstract fluff.\n\n🧩 Story Components to Include\nEmotional pain points that create urgency\n\nSpecific benefits tied to real-world outcomes\n\nA unique mechanism or belief shift that feels new but believable\n\nTransformation moments with “aha!” energy\n\nCustomer-style testimonials that feel raw and honest\n\nCuriosity-based headlines that stop the scroll\n\nSubtext of empathy and “this could be me” relatability\n\n## DONT'S\n- DO NOT MAKE ANY CHANGES IN THE INFORMATION PROVIDED, SUCH AS **URLS** **PRODUCT NAME**\n\nJSON OUTPUT:\n{\n  \"productName\": \"{{ $('On form submission').item.json['Enter the name of the product'] }}\",\n  \"productDescription\": \"Brief product description\",\n  \"targetAudience\": \"Your target audience\",\n  \"mainProblem\": \"Main problem you solve\",\n  \"uniqueMechanism\": \"Your unique approach/solution\",\n  \"keyBenefits\": [\"Benefit 1\", \"Benefit 2\", \"Benefit 3\"],\n  \"pricePoint\": \"$49.99\",\n  \"customerName\": \"Create a persona\",\n  \"location\": \"Texas\",\n\n  \"productSiteUrl\": \"{{ $('On form submission').item.json['Enter your url'] }}\",\n  \"orderUrl\": \"https://yourstore.com/checkout\",\n  \"heroImageUrl\": \"https://yoursite.com/product-image.jpg\",\n\n  \"headline\": \"Optional: Custom headline\",\n  \"subheadline\": \"Optional: Custom subheadline\",\n  \"hook\": \"Optional: Opening hook sentence\",\n\n  \"customHeadline\": \"Your Custom Headline Here\",\n  \"customSubheadline\": \"Your custom subheadline here\",\n  \"customHook\": \"Your custom hook here\",\n\n  \"qualityHeading\": \"Your quality section heading\",\n  \"featuresHeading\": \"Your features section heading\",\n  \"testimonialsHeading\": \"Your testimonials heading\",\n  \"whereToHeading\": \"Where to buy heading\",\n  \"resultHeading\": \"Results heading\",\n\n  \"painPoints\": [\n    \"Pain point 1\",\n    \"Pain point 2\",\n    \"Pain point 3\"\n  ],\n\n  \"customPainPoints\": [\n    \"First pain point about the problem\",\n    \"Second pain point about struggles\",\n    \"Third pain point about failed solutions\",\n    \"Fourth pain point about root cause\"\n  ],\n\n  \"problemSectionHeading\": \"Your custom problem section title\",\n  \"benefitsSectionHeading\": \"Your custom benefits section title\",\n  \"testimonialsSectionHeading\": \"Your custom testimonials section title\",\n  \"whereToBuySectionHeading\": \"Your custom where to buy section title\",\n\n  \"mainQuote\": \"Your main mechanism quote\",\n  \"helplessQuote\": \"Your helpless feeling quote\",\n  \"hopeQuote\": \"The hope/discovery quote\",\n\n  \"stockStatus\": \"● IN STOCK: Your custom stock message\",\n  \"limitedOffer\": \"YOUR CUSTOM LIMITED OFFER HEADLINE\",\n  \"availabilityWarning\": \"(YOUR CUSTOM AVAILABILITY WARNING)\"\n}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Elite Direct Response Copywriter\nYou are an elite, conversion-driven direct response copywriter who specializes in emotionally powerful long-form advertorials. Your writing is rooted in the Nightmare → Discovery → Solution → Transformation storytelling framework, designed to create emotional tension, empathetic connection, and breakthrough \"aha!\" moments.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1032,
+        1020
+      ],
+      "id": "cdfa7d96-35e1-4941-b43c-c765a944fb5b",
+      "name": "ANGLE1"
+    },
+    {
+      "parameters": {
+        "content": "## html Formating\n template structure precisely, including formatting, emotional hooks, and conversion elements",
+        "height": 620,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        760
+      ],
+      "typeVersion": 1,
+      "id": "f8aca96a-4f52-4f82-b76a-81a1cb83cef9",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Formating\n",
+        "height": 620,
+        "width": 350,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        609,
+        760
+      ],
+      "id": "cc29b30d-08bb-4f2b-a615-1b0558cbad7b",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get data from n8n input - handle multiple possible input structures\nlet inputData;\ntry {\n  // Try to get data from the first input\n  inputData = $input.first().json;\n  \n  // Handle nested structures\n  if (inputData.output) {\n    inputData = inputData.output;\n  }\n  \n  // Handle array structures\n  if (Array.isArray(inputData) && inputData.length > 0) {\n    if (inputData[0].output) {\n      inputData = inputData[0].output;\n    } else {\n      inputData = inputData[0];\n    }\n  }\n} catch (error) {\n  throw new Error(`Failed to parse input data: ${error.message}`);\n}\n\n// Validate that we have input data\nif (!inputData || typeof inputData !== 'object') {\n  throw new Error('No valid input data found');\n}\n\n// Required fields validation\nconst required = ['productName', 'productDescription', 'targetAudience', 'mainProblem', 'uniqueMechanism', 'keyBenefits', 'pricePoint'];\nconst missing = required.filter(field => !inputData[field] || inputData[field] === '');\n\nif (missing.length > 0) {\n  throw new Error(`Missing required fields: ${missing.join(', ')}`);\n}\n\n// Helper function to safely process arrays or comma-separated strings\nfunction processArray(value, fallback = []) {\n  if (Array.isArray(value)) {\n    return value.filter(item => item && item.trim());\n  }\n  if (typeof value === 'string' && value.trim()) {\n    return value.split(',').map(item => item.trim()).filter(item => item);\n  }\n  return fallback;\n}\n\n// Helper function to safely get string values\nfunction getString(value, fallback = '') {\n  return (typeof value === 'string' && value.trim()) ? value.trim() : fallback;\n}\n\n// Process and structure the data\nconst processedData = {\n  // Core product info\n  productName: getString(inputData.productName),\n  productDescription: getString(inputData.productDescription),\n  targetAudience: getString(inputData.targetAudience),\n  mainProblem: getString(inputData.mainProblem),\n  uniqueMechanism: getString(inputData.uniqueMechanism),\n  keyBenefits: processArray(inputData.keyBenefits, ['Improved results', 'Better experience', 'Long-lasting solution']),\n  pricePoint: getString(inputData.pricePoint),\n  \n  // URL mappings - use provided URLs or fallback to anchors\n  productSiteUrl: getString(inputData.productSiteUrl, '#product-site'),\n  orderUrl: getString(inputData.orderUrl, '#order'),\n  \n  // Optional fields with safe defaults\n  heroImageUrl: getString(inputData.heroImageUrl, 'https://via.placeholder.com/800x400/2c3e50/ffffff?text=Product+Image'),\n  claims: getString(inputData.claims),\n  studies: getString(inputData.studies),\n  guarantee: getString(inputData.guarantee, '100% Money Back Guarantee'),\n  discount: getString(inputData.discount, '50% OFF'),\n  \n  // Generate story elements with safe defaults\n  customerName: getString(inputData.customerName, 'Sarah'),\n  location: getString(inputData.location, 'Texas'),\n  urgencyTrigger: getString(inputData.urgencyTrigger, 'crisis situation'),\n  \n  // Headlines and hooks - prioritize custom fields, then basic fields, then auto-generate\n  hook: getString(inputData.customHook || inputData.hook, \n    `${inputData.targetAudience ? inputData.targetAudience.split(' ')[0] : 'Customer'} almost lost everything because of ${inputData.mainProblem ? inputData.mainProblem.toLowerCase() : 'this problem'}.`),\n  \n  headline: getString(inputData.customHeadline || inputData.headline, \n    `${inputData.customerName || 'Mom'} Exposes ${inputData.productName} Secret That ${inputData.uniqueMechanism ? inputData.uniqueMechanism.split(' ').slice(0, 8).join(' ') : 'Changes Everything'}`),\n  \n  subheadline: getString(inputData.customSubheadline || inputData.subheadline, \n    `\"I never thought ${inputData.productName ? inputData.productName.toLowerCase() : 'this product'} could ${processArray(inputData.keyBenefits)[0] ? processArray(inputData.keyBenefits)[0].toLowerCase() : 'change everything'}...\"`),\n  \n  // Section headings (use custom if provided, otherwise use defaults)\n  qualityHeading: getString(inputData.qualityHeading, 'Why Quality Matters'),\n  featuresHeading: getString(inputData.featuresHeading, 'Key Features'),\n  testimonialsHeading: getString(inputData.testimonialsHeading, 'What Our Customers Say'),\n  whereToHeading: getString(inputData.whereToHeading, 'Where To Buy'),\n  resultHeading: getString(inputData.resultHeading, 'Results You Can Expect'),\n  \n  // Additional section headings\n  problemSectionHeading: getString(inputData.problemSectionHeading, 'The Problem You Are Facing'),\n  benefitsSectionHeading: getString(inputData.benefitsSectionHeading, 'Benefits You Will Experience'),\n  testimonialsSectionHeading: getString(inputData.testimonialsSectionHeading, 'Real Customer Stories'),\n  whereToBuySectionHeading: getString(inputData.whereToBuySectionHeading, 'Get Yours Today'),\n  \n  // Pain points - prioritize customPainPoints, then painPoints, then generate defaults\n  painPoints: processArray(inputData.customPainPoints || inputData.painPoints, [\n    `Struggling with ${inputData.mainProblem ? inputData.mainProblem.toLowerCase() : 'daily challenges'}`,\n    'Feeling frustrated with failed solutions',\n    'Wasting time and money on products that do not work',\n    'Losing confidence because nothing seems to help'\n  ]),\n  \n  // Story quotes (use custom if provided, otherwise generate defaults)\n  mainQuote: getString(inputData.mainQuote, \n    `\"The secret is in the ${inputData.uniqueMechanism ? inputData.uniqueMechanism.toLowerCase() : 'innovative approach'}\"`),\n  \n  helplessQuote: getString(inputData.helplessQuote, \n    `\"I felt completely helpless dealing with ${inputData.mainProblem ? inputData.mainProblem.toLowerCase() : 'this issue'}\"`),\n  \n  hopeQuote: getString(inputData.hopeQuote, \n    `\"When I discovered ${inputData.productName || 'this solution'}, everything changed\"`),\n  \n  // Urgency elements (use custom if provided, otherwise generate defaults)\n  stockStatus: getString(inputData.stockStatus, \n    `● IN STOCK: ${inputData.productName || 'Product'} Available Now`),\n  \n  limitedOffer: getString(inputData.limitedOffer, \n    `LIMITED TIME: ${inputData.discount || '50% OFF'} ${inputData.productName ? inputData.productName.toUpperCase() : 'PRODUCT'}`),\n  \n  availabilityWarning: getString(inputData.availabilityWarning, \n    '(Limited quantities available - order while supplies last)')\n};\n\n// Validate that we have all required data after processing\nconst processedRequired = ['productName', 'productDescription', 'targetAudience', 'mainProblem', 'uniqueMechanism'];\nconst stillMissing = processedRequired.filter(field => !processedData[field]);\n\nif (stillMissing.length > 0) {\n  throw new Error(`Processed data is missing required fields: ${stillMissing.join(', ')}`);\n}\n\n// Log the processed data for debugging (optional)\nconsole.log('Processed Data:', JSON.stringify(processedData, null, 2));\n\nreturn { json: processedData };"
+      },
+      "id": "6790e086-be9d-40d8-a0f4-e38a383a50e4",
+      "name": "Process Input Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"productName\": \"{{ $('On form submission').item.json['Enter the name of the product'] }}\",\n  \"productDescription\": \"Brief product description\",\n  \"targetAudience\": \"Your target audience\",\n  \"mainProblem\": \"Main problem you solve\",\n  \"uniqueMechanism\": \"Your unique approach/solution\",\n  \"keyBenefits\": [\"Benefit 1\", \"Benefit 2\", \"Benefit 3\"],\n  \"pricePoint\": \"$49.99\",\n  \"customerName\": \"Create a persona\",\n  \"location\": \"Texas\",\n\n  \"productSiteUrl\": \"{{ $('On form submission').item.json['Enter your url'] }}\",\n  \"heroImageUrl\": \"https://yoursite.com/product-image.jpg\",\n\n  \"headline\": \"Optional: Custom headline\",\n  \"subheadline\": \"Optional: Custom subheadline\",\n  \"hook\": \"Optional: Opening hook sentence\",\n\n  \"customHeadline\": \"Your Custom Headline Here\",\n  \"customSubheadline\": \"Your custom subheadline here\",\n  \"customHook\": \"Your custom hook here\",\n\n  \"qualityHeading\": \"Your quality section heading\",\n  \"featuresHeading\": \"Your features section heading\",\n  \"testimonialsHeading\": \"Your testimonials heading\",\n  \"whereToHeading\": \"Where to buy heading\",\n  \"resultHeading\": \"Results heading\",\n\n  \"painPoints\": [\n    \"Pain point 1\",\n    \"Pain point 2\",\n    \"Pain point 3\"\n  ],\n\n  \"customPainPoints\": [\n    \"First pain point about the problem\",\n    \"Second pain point about struggles\",\n    \"Third pain point about failed solutions\",\n    \"Fourth pain point about root cause\"\n  ],\n\n  \"problemSectionHeading\": \"Your custom problem section title\",\n  \"benefitsSectionHeading\": \"Your custom benefits section title\",\n  \"testimonialsSectionHeading\": \"Your custom testimonials section title\",\n  \"whereToBuySectionHeading\": \"Your custom where to buy section title\",\n\n  \"mainQuote\": \"Your main mechanism quote\",\n  \"helplessQuote\": \"Your helpless feeling quote\",\n  \"hopeQuote\": \"The hope/discovery quote\",\n\n  \"stockStatus\": \"● IN STOCK: Your custom stock message\",\n  \"limitedOffer\": \"YOUR CUSTOM LIMITED OFFER HEADLINE\",\n  \"availabilityWarning\": \"(YOUR CUSTOM AVAILABILITY WARNING)\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1180,
+        1240
+      ],
+      "id": "4b9dae62-7911-4337-b7da-b9d67e8e777c",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Get current date in MM/DD/YYYY format\nconst currentDate = new Date().toLocaleDateString('en-US', {\n    month: '2-digit',\n    day: '2-digit',\n    year: 'numeric'\n});\n\n// Generate the complete HTML advertorial\nconst htmlContent = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>${data.customHeadline || data.headline} - ${data.productName}</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        \n        body {\n            font-family: Arial, sans-serif;\n            font-size: 11px;\n            line-height: 1.4;\n            color: #333;\n            background-color: #fff;\n        }\n        \n        .container {\n            max-width: 800px;\n            margin: 0 auto;\n            background-color: #fff;\n        }\n        \n        .advertisement-label {\n            background-color: #f5f5f5;\n            text-align: center;\n            padding: 5px 0;\n            font-size: 10px;\n            color: #666;\n            font-style: italic;\n            border-bottom: 1px solid #ddd;\n        }\n        \n        .header {\n            background-color: #000;\n            color: #fff;\n            padding: 8px 20px;\n            font-size: 10px;\n            text-transform: uppercase;\n            letter-spacing: 1px;\n        }\n        \n        .main-content {\n            display: flex;\n            background-color: #fff;\n        }\n        \n        .content-area {\n            flex: 2;\n            padding: 20px;\n        }\n        \n        .sidebar {\n            flex: 1;\n            background-color: #f8f8f8;\n            padding: 20px;\n            border-left: 1px solid #ddd;\n        }\n        \n        .main-headline {\n            font-size: 24px;\n            font-weight: bold;\n            color: #000;\n            margin-bottom: 10px;\n            line-height: 1.2;\n        }\n        \n        .date-line {\n            font-size: 10px;\n            color: #666;\n            margin-bottom: 20px;\n        }\n        \n        .sponsored-label {\n            color: #999;\n            font-style: italic;\n        }\n        \n        .story-quote {\n            font-size: 14px;\n            font-style: italic;\n            color: #333;\n            margin: 20px 0;\n            line-height: 1.3;\n        }\n        \n        .story-subheading {\n            font-size: 18px;\n            font-weight: bold;\n            color: #000;\n            margin: 25px 0 15px 0;\n            line-height: 1.2;\n            font-style: italic;\n        }\n        \n        .story-text {\n            font-size: 11px;\n            line-height: 1.5;\n            margin-bottom: 15px;\n            color: #333;\n            text-align: justify;\n        }\n        \n        .story-text strong {\n            font-weight: bold;\n        }\n        \n        .story-text em {\n            font-style: italic;\n        }\n        \n        .cta-section {\n            background-color: #28a745;\n            color: white;\n            padding: 15px;\n            text-align: center;\n            margin: 30px 0;\n            border-radius: 3px;\n        }\n        \n        .cta-text {\n            font-size: 14px;\n            font-weight: bold;\n            margin-bottom: 10px;\n        }\n        \n        .cta-button {\n            display: inline-block;\n            background-color: #fff;\n            color: #28a745;\n            padding: 10px 20px;\n            text-decoration: none;\n            font-weight: bold;\n            font-size: 11px;\n            border-radius: 3px;\n            border: 2px solid #fff;\n            text-transform: uppercase;\n        }\n        \n        .cta-button:hover {\n            background-color: #f8f9fa;\n        }\n        \n        .yellow-cta {\n            background: linear-gradient(135deg, #ffd700, #ffed4e);\n            color: #000;\n            padding: 12px 25px;\n            font-size: 16px;\n            font-weight: bold;\n            text-decoration: none;\n            border-radius: 25px;\n            display: inline-block;\n            margin: 15px 0;\n            text-transform: uppercase;\n            border: 3px solid #0066cc;\n        }\n        \n        .urgency-box {\n            border: 2px solid #dc3545;\n            background-color: #fff5f5;\n            padding: 20px;\n            text-align: center;\n            margin: 30px 0;\n        }\n        \n        .urgency-headline {\n            color: #dc3545;\n            font-size: 16px;\n            font-weight: bold;\n            margin-bottom: 10px;\n            text-transform: uppercase;\n        }\n        \n        .urgency-subtext {\n            color: #dc3545;\n            font-size: 12px;\n            font-weight: bold;\n            margin-bottom: 15px;\n        }\n        \n        .stock-update {\n            background-color: #e6f3ff;\n            border: 1px dashed #0066cc;\n            padding: 10px;\n            margin: 15px 0;\n            font-size: 10px;\n            color: #333;\n        }\n        \n        .stock-status {\n            background-color: #d4edda;\n            color: #155724;\n            padding: 8px 15px;\n            border-radius: 3px;\n            font-weight: bold;\n            font-size: 11px;\n            display: inline-block;\n            margin: 10px 0;\n        }\n        \n        .sidebar-heading {\n            font-size: 12px;\n            font-weight: bold;\n            color: #000;\n            margin-bottom: 15px;\n            text-transform: uppercase;\n            border-bottom: 2px solid #000;\n            padding-bottom: 5px;\n        }\n        \n        .testimonial-box {\n            background-color: #fff;\n            border: 1px solid #ddd;\n            padding: 15px;\n            margin-bottom: 20px;\n        }\n        \n        .testimonial-author {\n            font-weight: bold;\n            color: #000;\n            font-size: 11px;\n            margin-bottom: 5px;\n        }\n        \n        .testimonial-location {\n            color: #666;\n            font-size: 10px;\n            margin-bottom: 10px;\n        }\n        \n        .testimonial-text {\n            font-size: 11px;\n            line-height: 1.4;\n            color: #333;\n            font-style: italic;\n        }\n        \n        .step-box {\n            background-color: #e3f2fd;\n            border: 1px solid #2196f3;\n            padding: 20px;\n            text-align: center;\n            margin: 20px 0;\n        }\n        \n        .step-number {\n            color: #2196f3;\n            font-size: 14px;\n            font-weight: bold;\n            margin-bottom: 10px;\n        }\n        \n        .step-action {\n            color: #2196f3;\n            font-size: 16px;\n            font-weight: bold;\n            text-decoration: none;\n            display: block;\n            margin-bottom: 10px;\n        }\n        \n        .step-description {\n            color: #2196f3;\n            font-size: 11px;\n            font-weight: bold;\n        }\n        \n        .step-note {\n            color: #666;\n            font-size: 10px;\n            margin-top: 5px;\n        }\n        \n        .footer-green-bar {\n            background-color: #28a745;\n            color: white;\n            padding: 12px;\n            text-align: center;\n            font-size: 12px;\n            font-weight: bold;\n            position: fixed;\n            bottom: 0;\n            left: 0;\n            right: 0;\n            z-index: 1000;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            gap: 20px;\n        }\n        \n        .footer-green-bar .cta-button {\n            background-color: #fff;\n            color: #28a745;\n            padding: 8px 16px;\n            font-size: 11px;\n        }\n        \n        .disclaimer {\n            background-color: #2c3e50;\n            color: #ecf0f1;\n            padding: 20px;\n            font-size: 9px;\n            line-height: 1.4;\n            text-align: center;\n        }\n        \n        .disclaimer-title {\n            font-weight: bold;\n            margin-bottom: 10px;\n            font-size: 10px;\n        }\n        \n        .footer-links {\n            margin-top: 15px;\n        }\n        \n        .footer-links a {\n            color: #bdc3c7;\n            text-decoration: none;\n            margin: 0 10px;\n            font-size: 9px;\n        }\n        \n        .product-highlight {\n            font-weight: bold;\n            color: #000;\n        }\n        \n        .price-highlight {\n            color: #dc3545;\n            font-weight: bold;\n        }\n        \n        .warranty-text {\n            font-style: italic;\n            color: #333;\n        }\n        \n        @media (max-width: 768px) {\n            .main-content {\n                flex-direction: column;\n            }\n            \n            .sidebar {\n                border-left: none;\n                border-top: 1px solid #ddd;\n            }\n            \n            .footer-green-bar {\n                flex-direction: column;\n                gap: 10px;\n                padding: 15px;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <!-- Advertisement Label -->\n        <div class=\"advertisement-label\">Advertisement</div>\n        \n        <!-- Header -->\n        <div class=\"header\"> </div>\n        \n        <!-- Main Content Area -->\n        <div class=\"main-content\">\n            <!-- Content Area -->\n            <div class=\"content-area\">\n                <!-- Main Headline -->\n                <h1 class=\"main-headline\">${data.customHeadline || data.headline}</h1>\n                \n                <!-- Date Line -->\n                <div class=\"date-line\">\n                    ${currentDate} | <span class=\"sponsored-label\">Sponsored Content</span>\n                </div>\n                \n                <!-- Opening Quote -->\n                <div class=\"story-quote\">\"${data.customHook || data.hook}\"</div>\n                \n                <!-- Story Subheading -->\n                <h2 class=\"story-subheading\">${data.mainQuote || 'My life changed completely after I discovered this...'}</h2>\n                \n                <!-- Story Text -->\n                <p class=\"story-text\">That's how ${data.customerName || 'Jennifer'} recalls the day when she first discovered this breakthrough solution...</p>\n                \n                <p class=\"story-text\">${data.customerName || 'Jennifer'} also remembers how amazed she was when she witnessed the incredible results that would ultimately <strong>solve her problem for good...</strong></p>\n                \n                <p class=\"story-text\"><em>(You might be amazed too once you find out what it actually is... and why it works so well.)</em></p>\n                \n                <p class=\"story-text\"><strong>3 months ago</strong>, ${data.customerName || 'Jennifer'} was dealing with ${data.mainProblem || 'this common problem'} and traditional solutions were not working...</p>\n                \n                <p class=\"story-text\">\"${data.hopeQuote || 'I had almost given up hope when I found this solution.'}\" ${data.customerName || 'Jennifer'} said. \"<strong>And that's when everything changed...</strong>\"</p>\n                \n                <p class=\"story-text\">Thousands of <strong>${data.targetAudience || 'people'} are now living better lives</strong> thanks to this breakthrough solution. Click here now to learn more about this life-changing product!</p>\n                \n                <!-- CTA Section -->\n                <div class=\"cta-section\">\n                    <div class=\"cta-text\">Get Up to 50% OFF Your ${data.productName} Today</div>\n                    <a href=\"${data.productSiteUrl}\" class=\"cta-button\">Apply Discount & Check Availability</a>\n                </div>\n                \n                <!-- Story Continuation -->\n                <h3 style=\"font-size: 14px; font-weight: bold; margin: 25px 0 15px 0;\">${data.qualityHeading || 'Covered By A 100% Money Back Guarantee!'}</h3>\n                \n                <p class=\"story-text\">The owners of ${data.productName} want to make one thing clear: if you are not satisfied with your purchase, then ${data.productName} will refund your money with zero hard feelings.</p>\n                \n                <p class=\"story-text\">From the thousands of positive reviews ${data.productName} has received, it is highly likely you will be completely won over by ${data.productName}'s quality, durability, and mission.</p>\n                \n                <p class=\"story-text\">However, just in case you aren't happy with your purchase, you can return it with zero hassle.</p>\n                \n                <h3 style=\"font-size: 14px; font-weight: bold; margin: 25px 0 15px 0;\">${data.problemSectionHeading || 'Not All Solutions Are Created Equal'}</h3>\n                \n                <p class=\"story-text\"><span class=\"product-highlight\">${data.productName}</span> is premium quality. In other words, it doesn't feel \"cheap.\"</p>\n                \n                <p class=\"story-text\">You see, with the growing demand for effective solutions, many <strong>knock-off</strong> products started popping up from companies hoping to make a quick buck, not really caring about your results...</p>\n                \n                <p class=\"story-text\">The quality of these knock offs are often very low— made with cheap materials with poor performance and components that break easily and are not backed by a <span class=\"warranty-text\">guarantee.</span></p>\n                \n                <p class=\"story-text\">With ${data.productName}'s proven approach, ${data.customerName || 'Jennifer'} started seeing results immediately, and then continued to see even better results over time.</p>\n                \n                <h3 style=\"font-size: 16px; font-weight: bold; margin: 25px 0 15px 0; color: #333;\">${data.resultHeading || 'What Happened Next Was Nothing Short Of Amazing!'}</h3>\n                \n                <p class=\"story-text\">Immediately ${data.customerName || 'Jennifer'} started seeing the results she had been hoping for. The solution that can deliver results made all the difference.</p>\n                \n                <!-- CTA Section -->\n                <div class=\"cta-section\">\n                    <div class=\"cta-text\">Get Up to 50% OFF Your ${data.productName} Today</div>\n                    <a href=\"${data.productSiteUrl}\" class=\"cta-button\">Apply Discount & Check Availability</a>\n                </div>\n                \n                <p class=\"story-text\">When ${data.customerName || 'Jennifer'} shared her results with friends, <strong>they were impressed by the transformation and asked about the solution.</strong></p>\n                \n                <p class=\"story-text\">\"I could see the difference immediately,\" one of her friends said. \"This solution is incredible! Even if I was skeptical at first, <strong>the results speak for themselves!</strong>\"</p>\n                \n                <p class=\"story-text\">After ${data.customerName || 'Jennifer'} continued to see amazing results, she reached out to ${data.productName} and shared her story.</p>\n                \n                <p class=\"story-text\">She credits <span class=\"product-highlight\">${data.productName}</span> as the single solution that changed her life and gave her the results she had been searching for.</p>\n                \n                <h3 style=\"font-size: 16px; font-weight: bold; margin: 25px 0 15px 0;\">${data.featuresHeading || 'What Makes ' + data.productName + ' So Powerful?'}</h3>\n                \n                <p class=\"story-text\">If you want to solve ${data.mainProblem || 'this problem'} once and for all...</p>\n                \n                <p class=\"story-text\">Then taking advantage of the following offer might be the best decision you'll make today...</p>\n                \n                <p class=\"story-text\">Right now, all readers that come from this page and click the button below can get <strong>up to 50% off their first order of ${data.productName}!</strong></p>\n                \n                <div style=\"text-align: center; margin: 30px 0;\">\n                    <a href=\"${data.productSiteUrl}\" class=\"cta-button\" style=\"background-color: #dc3545; color: white; padding: 12px 24px; font-size: 12px;\">Apply Discount & Check Availability</a>\n                </div>\n                \n                <p class=\"story-text\">Click the link above and see if ${data.productName} is still offering the <strong>one-time</strong> <span class=\"price-highlight\">discount</span></p>\n                \n                <p class=\"story-text\">And remember, <span class=\"product-highlight\">${data.productName}</span> is also the only solution that comes with our <span class=\"warranty-text\">guarantee.</span></p>\n            </div>\n            \n            <!-- Sidebar -->\n            <div class=\"sidebar\">\n                <div class=\"sidebar-heading\">${data.benefitsSectionHeading || 'Reader Results'}</div>\n                \n                <!-- Testimonial -->\n                <div class=\"testimonial-box\">\n                    <div class=\"testimonial-author\">Jennifer M.,</div>\n                    <div class=\"testimonial-location\">${data.targetAudience || 'Customer'} from ${data.location || 'Arizona'}</div>\n                    <div class=\"testimonial-text\">says, \"I have been using ${data.productName} for 2 months and the results are incredible\"</div>\n                </div>\n                \n                <div class=\"testimonial-text\" style=\"margin-bottom: 20px;\">\"... <strong>This solution actually works, unlike everything else I tried. The quality is outstanding and the results speak for themselves. I wish I had found this sooner!</strong>\"</div>\n                \n                <div class=\"testimonial-box\">\n                    <div class=\"testimonial-author\">${data.targetAudience || 'Customer'} - Jennifer M.</div>\n                    <div class=\"testimonial-location\">${data.location || 'Arizona'}</div>\n                </div>\n                \n                <!-- Step Box -->\n                <div class=\"step-box\">\n                    <div class=\"step-number\">STEP 1:</div>\n                    <a href=\"${data.productSiteUrl}\" class=\"step-action\">CLICK HERE</a>\n                    <div class=\"step-description\">to claim your discount!</div>\n                    <div class=\"step-note\">Limited Discounts on ${data.productName}.</div>\n                </div>\n            </div>\n        </div>\n        \n        <!-- Urgency Box -->\n        <div class=\"urgency-box\">\n            <div class=\"urgency-headline\">${data.limitedOffer || 'Limited Time Offer For Our Readers'} ✂️</div>\n            <div class=\"urgency-subtext\">${data.availabilityWarning || '(VERY LIMITED RUN - PLEASE CHECK FOR AVAILABILITY!)'}</div>\n            \n            <div class=\"stock-update\">\n                <strong>Update:</strong> Sell Out Risk High\n            </div>\n            \n            <div class=\"stock-status\">${data.stockStatus || '🔵 IN STOCK: Discounted ' + data.productName}</div>\n            \n            <a href=\"${data.productSiteUrl}\" class=\"yellow-cta\">BUY NOW</a>\n            \n            <p style=\"font-size: 11px; margin-top: 10px;\">\n                <a href=\"${data.productSiteUrl}\" style=\"color: #0066cc; text-decoration: underline;\">Take Advantage of Our Exclusive Link</a> and Also Get FREE Shipping!<br>\n                <small>(Minimum Purchase Required)</small>\n            </p>\n        </div>\n        \n        <!-- What Do Others Say Section -->\n        <h2 style=\"font-size: 16px; font-weight: bold; margin: 30px 20px 20px 20px; color: #666; font-style: italic;\">${data.testimonialsSectionHeading || 'What Do Others Say About ' + data.productName + '?'}</h2>\n        \n        <!-- Disclaimer -->\n        <div class=\"disclaimer\">\n            <div class=\"disclaimer-title\">This is an advertisement and not an actual news article, blog, or consumer protection update</div>\n            \n            <p style=\"margin-bottom: 15px;\">The story depicted on this site and the person depicted in the story are not actual news. Rather, this story is based on the results that some people who have used these products have achieved. The results portrayed in the story and in the comments are illustrative, and may not be the results that you achieve with these products. This page could receive compensation for clicks on or purchase of products featured on this site.</p>\n            \n            <div class=\"footer-links\">\n                <span>© 2025 All Rights Reserved.</span>\n                <a href=\"#\">Privacy Policy</a>\n                <a href=\"#\">Terms of Use</a>\n                <a href=\"#\">Contact Us</a>\n            </div>\n        </div>\n    </div>\n    \n    <!-- Fixed Footer Bar -->\n    <div class=\"footer-green-bar\">\n        <span>Get Up to 50% OFF Your ${data.productName} Today</span>\n        <a href=\"${data.productSiteUrl}\" class=\"cta-button\">Apply Discount & Check Availability</a>\n    </div>\n\n    <script>\n        // Add click tracking for CTA buttons and links\n        document.querySelectorAll('.cta-button, .step-action, .yellow-cta').forEach(button => {\n            button.addEventListener('click', function(e) {\n                console.log('CTA clicked:', this.textContent);\n                // Track clicks here\n            });\n        });\n        \n        // Add smooth scrolling\n        document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {\n            anchor.addEventListener('click', function (e) {\n                e.preventDefault();\n                const target = document.querySelector(this.getAttribute('href'));\n                if (target) {\n                    target.scrollIntoView({\n                        behavior: 'smooth'\n                    });\n                }\n            });\n        });\n    </script>\n</body>\n</html>`;\n\nreturn { json: { htmlContent, data } };"
+      },
+      "id": "4ad15364-50bb-4b3f-bc1a-a54a2599cf89",
+      "name": "Generate HTML Content1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1628,
+        1020
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# HTML CLEANING\n\n## Problem when using lower models such as qwen\n##### Generic responses- they sound very AI generated, however mainting the html structure\n\n### Observations \n\n###### Anthropic node performs slightly lower compared to anthropic model in open router\n\n### Recommendations\n- Just use the open router model",
+        "height": 1400,
+        "width": 1020
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        300
+      ],
+      "id": "aed0d0a9-3321-4c91-bc24-a6b75a723bbb",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.output;\n\nconst cleaned = text.replace(/\\\\n/g, ' ').replace(/\\s+/g, ' ').trim();\n\nreturn {\n  json: {\n    cleanedOutput: cleaned\n  }\n};\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2324,
+        1020
+      ],
+      "id": "c89820a8-4282-49e3-8115-a3f4d3d8b059",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# ANGLE-DRIVEN ADVERTORIAL CONTENT OPTIMIZATION TASK\n\nYour task is to optimize ONLY the text content within HTML advertorials to match a specific narrative angle while making ZERO changes to HTML structure, CSS, classes, styling, or any design elements.\n\n## CORE MISSION:\n\nTransform generic advertorial content into compelling, angle-specific narratives that feel authentic and drive conversions through strategic storytelling that aligns with the provided angle.\n\n## ANGLE-BASED CONTENT OPTIMIZATION:\n\n### 1. ANGLE ALIGNMENT\n- **Match the Narrative Voice:** Adapt all content to reflect the specific angle's tone, perspective, and emotional approach\n- **Maintain Angle Consistency:** Ensure every piece of text content supports and reinforces the chosen angle\n- **Character Development:** Align character background, motivations, and journey with the angle's target audience\n- **Problem-Solution Mapping:** Frame the pain points and solutions through the lens of the specific angle\n\n### 2. AUTHENTIC STORYTELLING WITHIN ANGLE\n- **Eliminate AI-Generated Language:** Remove robotic phrases while staying true to the angle's voice\n- **Enhance Emotional Resonance:** Build genuine emotional connection that matches the angle's emotional core\n- **Specific Detail Integration:** Add believable specifics that support the angle's narrative framework\n- **Natural Flow Creation:** Ensure content flows naturally while maintaining angle consistency\n\n### 3. CHARACTER VOICE ADAPTATION\n- **Name Replacement:** If character is \"Sarah\" or \"Sophie,\" replace with name that fits the angle\n- **Voice Consistency:** Maintain character voice that aligns with the angle's demographic and tone\n- **Background Alignment:** Ensure character details support the angle's target audience\n- **Journey Authenticity:** Make character transformation believable within the angle's context\n\n## WHAT YOU MUST NEVER CHANGE:\n\n### ABSOLUTE NO-TOUCH ZONES:\n- **HTML Tags:** No adding, removing, or modifying any HTML tags\n- **CSS Classes:** No changing class names or attributes\n- **Styling Elements:** No modifications to any style-related code\n- **Structure Elements:** No changing divs, sections, containers, or layout elements\n- **Links and URLs:** No modifying href attributes or link structure\n- **Image Tags:** No changing img tags, src attributes, or alt text\n- **Form Elements:** No modifying input fields, buttons, or form structure\n- **JavaScript:** No adding or modifying any script elements\n- **Responsive Elements:** No modifying breakpoints or mobile-specific code\n\n## CONTENT AREAS TO OPTIMIZE (TEXT ONLY):\n\n### Primary Content Optimization Targets:\n- **Headlines:** Text inside heading tags (keep tags, change only text content)\n- **Story Paragraphs:** All narrative content within paragraph elements\n- **Character Dialogue:** Direct quotes and internal thoughts\n- **Problem Descriptions:** Pain point explanations and agitation content\n- **Solution Explanations:** Product descriptions and benefit statements\n- **Testimonial Content:** Customer quotes and social proof text\n- **Call-to-Action Text:** Button text and urgency messaging\n- **Feature Descriptions:** Product feature explanations and benefits\n\n## ANGLE-SPECIFIC NARRATIVE STRUCTURE:\n\n### Opening Hook (Angle-Driven)\n- Start with scene/emotion that captures the angle's core theme\n- Establish character in situation that reflects angle's target audience\n- Create immediate emotional connection through angle-specific pain point\n- Use language and tone that matches the angle's voice\n\n### Problem Development (Angle-Focused)\n- Present struggles through the angle's unique perspective\n- Show consequences that matter to the angle's target demographic\n- Build tension using language and examples that resonate with the angle\n- Create urgency around problems the angle specifically addresses\n\n### Discovery Journey (Angle-Aligned)\n- Create believable discovery path that fits the angle's narrative\n- Include skepticism and hesitation appropriate to the angle's voice\n- Present solution introduction that aligns with angle's approach\n- Maintain character voice that matches the angle's demographic\n\n### Transformation Story (Angle-Specific Results)\n- Show results that matter to the angle's target audience\n- Use metrics and improvements relevant to the angle's focus\n- Present lifestyle changes that align with the angle's aspirations\n- Create future-pacing that matches the angle's desired outcomes\n\n### Social Proof and Urgency (Angle-Consistent)\n- Include testimonials that speak the angle's language\n- Create urgency messaging that resonates with the angle's audience\n- Present guarantees and risk-reversal in the angle's tone\n- Maintain consistency with the angle's overall narrative approach\n\n## CONTENT AUTHENTICITY REQUIREMENTS:\n\n### Generic Phrases to Eliminate:\n- \"I was skeptical at first, but...\"\n- \"It was a game-changer\"\n- \"I couldn't believe the results\"\n- \"Life-changing experience\"\n- \"Incredible transformation\"\n- \"It seemed too good to be true\"\n\n### Angle-Specific Authenticity Markers:\n- Language patterns that match the angle's voice\n- Specific details relevant to the angle's target audience\n- Emotional responses appropriate to the angle's tone\n- Cultural references and examples that resonate with the angle\n- Problems and solutions framed through the angle's perspective\n- Conversational style that matches the angle's demographic\n\n## WORKFLOW PROCESS:\n\n### Step 1: Angle Analysis\n- Identify the angle's core theme and emotional approach\n- Determine target audience demographics and psychographics\n- Understand the angle's unique perspective on the problem/solution\n- Note the angle's preferred language patterns and tone\n\n### Step 2: Character Adaptation\n- Align character background with angle's target audience\n- Adjust character voice to match angle's communication style\n- Ensure character journey reflects angle's narrative framework\n- Maintain character authenticity within angle constraints\n\n### Step 3: Content Transformation\n- Rewrite all text content to match angle's voice and perspective\n- Ensure every paragraph supports the angle's narrative theme\n- Integrate angle-specific language patterns and references\n- Maintain emotional consistency throughout the content\n\n### Step 4: Flow Optimization\n- Ensure smooth transitions between sections within the angle\n- Verify that problem-solution progression matches angle's approach\n- Check that all content elements reinforce the angle's core message\n- Confirm that call-to-action aligns with angle's motivation strategy\n\n## INPUT REQUIREMENTS:\n\nWhen using this prompt, provide:\n1. **HTML Advertorial:** Complete HTML code needing optimization\n2. **Narrative Angle:** The specific angle/approach to match\n3. **Product Information:** Product name and key details for integration\n\n## OUTPUT REQUIREMENTS:\n\n### Must Deliver:\n- Complete HTML with angle-optimized text content\n- Preserved HTML structure and all design elements\n- Authentic narrative that matches the provided angle\n- Compelling story that drives conversions through angle-specific approach\n- NO commentary, explanations, or additional text outside the HTML\n\n### Content Quality Standards:\n- Every piece of text aligns with the provided angle\n- Character voice feels authentic to the angle's demographic\n- Problem-solution narrative flows naturally within angle framework\n- Emotional journey resonates with angle's target audience\n- All content feels human-written and genuinely engaging\n\n## STRICT CONTENT-ONLY RULES:\n\n1. **TEXT MODIFICATION ONLY:** Change only readable text content between HTML tags\n2. **STRUCTURE PRESERVATION:** Keep every HTML tag, attribute, and class exactly as provided\n3. **ANGLE CONSISTENCY:** Ensure all content aligns with and reinforces the provided angle\n4. **NO DESIGN CHANGES:** Make zero modifications to layout, styling, or visual elements\n5. **PURE HTML OUTPUT:** Provide only the HTML code with optimized text content\n6. **AUTHENTIC VOICE:** Ensure all text sounds genuinely human-written within the angle's voice\n7. **FORMAT**- DO NOT CHANGE, THE STYLING FORMATING OR THINGS THAT WILL TEMPER SINCE I WANT IT DOWNLOADED AS BINARY\n\nRemember: You are optimizing content to match a specific narrative angle. Every word of text content must serve the angle's story while treating the HTML structure as completely untouchable. Focus on creating compelling, angle-aligned content that converts through authentic storytelling.\nTARGET SPECIFICATIONS\n\n**Length:** 900-1,200 words (match 1Tac length, not longer)\n**Reading Level:** 5th grade maximum\n**Structure:** Customer testimonial story format (NOT company selling)\n**Tone:** Conversational, emotional, urgent but helpful\n\nCRITICAL FRAMEWORK REQUIREMENTS\n\nOPENING HOOK\n- Start with ONE short, punchy sentence that cuts to core pain/fear\n- Example: \"Max was dying, and it was my fault.\"\n- Should be 6-12 words maximum\n- Must create immediate emotional impact\n\nRMBC STRUCTURE (NON-NEGOTIABLE)\n**Lead:**\n- Call out problem with statistics/urgency\n- Promise solution + tease discovery story\n- Tease unique mechanism (contrarian/surprising)\n- Brief credibility builders\n- Qualify audience\n\n**Background Story:**\n- Customer narrator (NOT company owner)\n- \"I was just like you\" connection\n- Traditional solutions failing\n- Trigger event/crisis moment\n- Search for truth/answers\n\n**Unique Mechanism of Problem:**\n- Surprising/counterintuitive explanation\n- \"99% know this, but the missing 1% is...\"\n- Scientific backing/credibility\n\n**Unique Mechanism of Solution:**\n- Logical connection to problem\n- Specific methodology/technology\n- Why this works when others fail\n\n**Product Buildup + Reveal:**\n- Customer discovered product through research\n- Testing/results story\n- Proof it works\n- Others asking for it\n\n**Close:**\n- Product details and differentiators\n- Social proof/testimonials\n- Urgency/scarcity\n- Guarantee\n- Price justification\n- Multiple CTAs\n- Two-choice close\n\n### 3. HEATH WILCOCK PAS FLOW\n- **Pain:** Identify and agitate the core problem\n- **Agitate:** Make the problem feel urgent and costly\n- **Solution:** Present the discovery and results\n\n### 4. WRITING STYLE REQUIREMENTS\n\n**Sentences:**\n- Keep most sentences under 10 words\n- Use simple words (5th grade level)\n- Break up complex ideas into multiple short sentences\n- Vary sentence length for rhythm\n-**\n**Vocabulary:**\n- Replace complex terms with simple ones\n- If technical terms needed, immediately explain in simple language\n- Use emotional, conversational language\n\n**Paragraphs:**\n- 1 sentences maximum\n- Lots of white space\n- Easy to scan\n\n**Headlines:**\n- Create curiosity and promise benefits\n- Avoid starting with \"The\" \n- Make them compelling, not just topic labels\n- Examples: \"How A $3,200 Emergency Saved My Cat's Life\"\n\n### 5. BOLDING FOR SCANNABILITY\nBold these elements:\n- Key statistics and numbers\n- Shocking revelations\n- Solution benefits and results\n- Urgency/scarcity elements\n- Guarantee terms\n- Call-to-action phrases\n\n### 6. CUSTOMER STORY FORMAT\n- Narrator is a CUSTOMER who discovered the product\n- NOT the company owner or seller\n- Share their discovery story to help others\n- Product is made by separate company\n- CTAs direct to \"check availability\" not \"we're offering\"\n\n## MASS DESIRES TO TARGET\nFocus on the 3 core desires:\n1. **Prevention of Crisis:** Avoid disaster/emergency/loss\n2. **Peace of Mind:** Eliminate worry and uncertainty  \n3. **Understanding:** Know the real reason behind problems\n\n\n## THIS IS THE ANGLE CONTEXT\n{{ $('AI Agent3').item.json.output }}\n\nContext\n{{ $json[\"htmlContent\"] }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert copywriter and HTML optimizer specializing in making advertorials feel authentic, compelling, and conversion-focused. Your task is to review and optimize HTML advertorials to eliminate generic AI language and ensure maximum authenticity and flow.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1848,
+        920
+      ],
+      "id": "a66d777b-b7a8-4d8c-8b55-146eea3ce94c",
+      "name": "HTML CLEANER"
+    },
+    {
+      "parameters": {
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "content": "You are a world-class research assistant trained in deep emotional pattern recognition and customer pain point extraction. You specialize in finding raw, first-person insights from online forums that reflect the inner struggles of a target demographic. You never fabricate content. You return only real Reddit posts, not hypothetical ones.\n",
+              "role": "system"
+            },
+            {
+              "content": "=Based on the demographic data extracted from the SimilarWeb screenshot of **{{ $('On form submission').item.json.Competitor }}**, focus on their **dominant demographic**:\n\n> {{ $json.cleanedOutput }}\n\nYour task is to find **20 real Reddit posts** written by people within this dominant demographic that describe the **emotional pain, frustration, fear, or anxiety** caused by the core problem that **{{ $('On form submission').item.json['Enter the name of the product'] }}** is designed to solve.\n\n---\n\n### ❌ Do NOT:\n- Include product reviews or complaints about specific products or brand names.\n- Mention **{{ $('On form submission').item.json['Enter the name of the product'] }}** or **{{ $('On form submission').item.json.Competitor }}** in the post content.\n\n---\n\n### ✅ Focus On:\nPeople discussing the **underlying problem** that **{{ $('On form submission').item.json['Enter the name of the product'] }}** solves — such as:\n- Emotional breakdowns or obsessive thinking.\n- Shame, anxiety, or fear.\n- Identity crises or lifestyle deterioration.\n- Self-esteem issues or relationship consequences.\n\n---\n\n### 🔍 FOR EACH REDDIT POST, RETURN:\n1. 🔗 A **direct URL** to the Reddit post.\n2. 📝 A **short quote or excerpt** that highlights the emotional or mental struggle.\n3. 💡 A **brief note on what emotion is being expressed** (e.g., shame, fear, frustration).\n\n---\n\n### 🧠 Prioritize:\n- First-person language and personal stories.\n- Emotionally raw or vulnerable writing.\n- Rock-bottom moments, tipping points, or obsessive spirals.\n- Posts where the problem seriously affected their freedom, health, relationships, or mental clarity.\n\n---\n\n## 📌 STRICT INSTRUCTIONS:\n- Return **exactly 20 Reddit post URLs**.\n- No summaries or commentary.\n- No more, no less — return **only the 20 URLs** (as clickable links in plain text).\n- Do **not** generate content — only return real posts from Reddit.\n\n---"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 1,
+      "position": [
+        -2104,
+        1020
+      ],
+      "id": "db5d04c0-46a9-4dd0-99e1-30326d33d8b9",
+      "name": "Perplexity",
+      "credentials": {
+        "perplexityApi": {
+          "id": "GOnkswfJWLnlbAyA",
+          "name": "Perplexity account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "content": "You are a seasoned **market researcher** trained in emotional analysis, customer behavior, and language pattern recognition. Your job is to deeply analyze user-generated content to uncover emotional triggers, psychological themes, and behavioral insights. You do not summarize casually — you extract meaning with clarity and empathy.\n",
+              "role": "system"
+            },
+            {
+              "content": "=## 🧠 SYSTEM\n\nYou are a seasoned **market researcher** trained in emotional analysis, customer behavior, and language pattern recognition. Your job is to deeply analyze user-generated content to uncover emotional triggers, psychological themes, and behavioral insights. You do not summarize casually — you extract meaning with clarity and empathy.\n\n---\n\n## 👤 USER\n\n## 🧠 Analyze Emotional Language from Customer Forum Posts\n\nBelow are 20 URLs to public forum posts written by users that match the **dominant customer demographic** for **[{{ $('AI Agent4').item.json.output }}]**, based on audience insights derived from **[{{ $('On form submission').item.json.Competitor }}]**'s profile.\n\nThese posts reveal how people in this demographic **describe their pain, frustration, fear, anxiety, or emotional tipping points** related to the **core problem** that **[{{ $('On form submission').item.json['Enter the name of the product'] }}]** is designed to solve.\n\n---\n\n### 🎯 Tasks:\n\n1. **Read and analyze** each forum post at the provided URLs.\n2. Evaluate the **emotional and psychological state** of each author:\n   - What specific **emotions** are they expressing?\n   - What is the **tone** and **intensity** of their language?\n   - Are there signs of shame, fear, hopelessness, anxiety, or obsession?\n3. Identify and highlight:\n   - Recurring **keywords** and **emotional phrases**\n   - Common **semantic patterns** or narrative arcs\n   - Language reflecting **identity conflict**, lifestyle disruption, or value misalignment\n   - Any use of **metaphor**, vivid analogy, or emotional storytelling\n\n---\n\n### REQUIRED OUTPUT 🧾 Output:\n\n- A **summary of emotional patterns** across all 20 posts\n- A breakdown of **core emotional drivers**\n- A categorized list of recurring **keywords and phrases**\n- 3–5 short **quotes** that best capture the voice and pain of this demographic\n- A final insight: **how this demographic emotionally experiences the problem**, in their own words and worldview\n\n---\n\n### 🧷 Use Case:\n\nThis analysis will be used to develop a **deep empathy-driven customer profile**, not just surface-level pain points.\n\n---\n\n**🔗 URLs to Analyze:**\n\n[{{ $json.urls }}]\n\n\n---"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        1020
+      ],
+      "id": "395b65ab-1113-4d60-b5b8-9ff7782a4f9c",
+      "name": "Perplexity1",
+      "credentials": {
+        "perplexityApi": {
+          "id": "GOnkswfJWLnlbAyA",
+          "name": "Perplexity account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -1356,
+        1240
+      ],
+      "id": "5bdefe3d-2271-464a-8278-ff04b9a3b37c",
+      "name": "Anthropic Chat Model3",
+      "credentials": {
+        "anthropicApi": {
+          "id": "LLZMTiKtPr7v9w2Q",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-7-sonnet-20250219",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 3.7"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -980,
+        1240
+      ],
+      "id": "cb09b5cc-9fd9-4db1-82d3-bcbe38697e6e",
+      "name": "Anthropic Chat Model4",
+      "credentials": {
+        "anthropicApi": {
+          "id": "LLZMTiKtPr7v9w2Q",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -228,
+        1240
+      ],
+      "id": "0a2be1a5-0412-4ca0-8134-38d070aa557f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "BWLsjACweSMwrXDM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        1240
+      ],
+      "id": "0517a4ab-bde5-4606-8b5d-1108d6b40052",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "BWLsjACweSMwrXDM",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1060,
+        1240
+      ],
+      "id": "78ba3f01-c867-4d76-987f-01f0973236db",
+      "name": "Anthropic Chat Model5",
+      "credentials": {
+        "anthropicApi": {
+          "id": "LLZMTiKtPr7v9w2Q",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-7-sonnet-20250219",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 3.7"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        744,
+        1240
+      ],
+      "id": "648ed373-6d87-4780-9eb3-206e70e83cae",
+      "name": "Anthropic Chat Model6",
+      "credentials": {
+        "anthropicApi": {
+          "id": "LLZMTiKtPr7v9w2Q",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "walkerkeenen15@gmail.com",
+        "subject": "HTML ADVERTORIAL",
+        "emailType": "text",
+        "message": "Check this out!",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2600,
+        1020
+      ],
+      "id": "2cf5f2d9-d809-4d34-a5b9-1d00a08d98cf",
+      "name": "Gmail",
+      "webhookId": "8c797649-dfe9-4ca3-9ed9-775e8f87fa5d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yKCNdRItPe0BAEdV",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-sonnet-4",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        1140
+      ],
+      "id": "211e10f2-e274-4d7b-a714-a9ca0ba422a7",
+      "name": "OpenRouter Chat Model3",
+      "credentials": {
+        "openRouterApi": {
+          "id": "heFEr6My8BqwIv2x",
+          "name": "OpenRouter - Keenen New"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get HTML string from previous node\nconst rawHtml = $input.first().json.output;\n\n// 2. Replace escaped line breaks with actual newlines\nconst cleanHtml = rawHtml.replace(/\\\\n/g, '\\n');\n\n// 3. Return as binary HTML file\nreturn [\n  {\n    binary: {\n      data: {\n        data: Buffer.from(cleanHtml, 'utf-8').toString('base64'),\n        mimeType: 'text/html',\n        fileName: 'advertorial.html'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        1020
+      ],
+      "id": "f7e7ca02-85bf-4d2b-bc32-22dd24ffd76f",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Generate the complete HTML advertorial with exact styling from reference images\nconst htmlContent = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>${data.customHeadline || data.headline} - ${data.productName}</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        \n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;\n            font-size: 16px;\n            line-height: 1.6;\n            color: #333333;\n            background-color: #ffffff;\n            margin: 0;\n            padding: 0;\n        }\n        \n        .main-container {\n            max-width: 800px;\n            margin: 0 auto;\n            background-color: #fff;\n            position: relative;\n        }\n        \n        /* Header Section - Navy Blue Bar */\n        .site-header {\n            background: linear-gradient(135deg, #1a237e, #283593);\n            color: white;\n            padding: 12px 0;\n            text-align: center;\n            font-weight: 600;\n            font-size: 18px;\n            letter-spacing: 1px;\n            text-transform: uppercase;\n            margin-bottom: 0;\n        }\n        \n        .container {\n            padding: 0 20px;\n            max-width: 800px;\n            margin: 0 auto;\n        }\n        \n        /* Main Article Header */\n        .article-header {\n            background-color: #f8f9fa;\n            padding: 30px 20px 25px 20px;\n            border-bottom: 1px solid #e9ecef;\n        }\n        \n        .main-headline {\n            font-size: 32px;\n            font-weight: 700;\n            color: #1a237e;\n            margin-bottom: 15px;\n            line-height: 1.3;\n            text-align: left;\n        }\n        \n        .article-meta {\n            color: #666;\n            font-size: 14px;\n            margin-bottom: 20px;\n        }\n        \n        .lead-text {\n            font-size: 18px;\n            color: #2d5016;\n            font-weight: 500;\n            line-height: 1.5;\n            font-style: italic;\n            border-left: 4px solid #2d5016;\n            padding-left: 15px;\n            margin: 20px 0;\n        }\n        \n        /* Product Card - Right Sidebar Style */\n        .product-sidebar {\n            float: right;\n            width: 280px;\n            background: linear-gradient(135deg, #f8f9fa, #e9ecef);\n            border: 2px solid #dee2e6;\n            border-radius: 8px;\n            padding: 20px;\n            margin: 20px 0 20px 20px;\n            text-align: center;\n            box-shadow: 0 4px 8px rgba(0,0,0,0.1);\n        }\n        \n        .product-logo {\n            background-color: #1a237e;\n            color: white;\n            padding: 8px 16px;\n            border-radius: 20px;\n            font-size: 14px;\n            font-weight: 600;\n            margin-bottom: 15px;\n            display: inline-block;\n        }\n        \n        .product-title {\n            font-size: 18px;\n            font-weight: 700;\n            color: #1a237e;\n            margin-bottom: 15px;\n            line-height: 1.3;\n        }\n        \n        .product-image-placeholder {\n            width: 200px;\n            height: 150px;\n            background-color: #f0f0f0;\n            border: 2px dashed #ccc;\n            margin: 15px auto;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            color: #666;\n            font-size: 12px;\n            text-align: center;\n            border-radius: 4px;\n        }\n        \n        .product-description {\n            font-size: 14px;\n            color: #333;\n            margin-bottom: 15px;\n            line-height: 1.4;\n        }\n        \n        .cta-button-primary {\n            background: linear-gradient(135deg, #4a148c, #6a1b9a);\n            color: white;\n            padding: 12px 24px;\n            border: none;\n            border-radius: 6px;\n            font-size: 14px;\n            font-weight: 600;\n            text-decoration: none;\n            display: inline-block;\n            margin: 10px 0;\n            cursor: pointer;\n            text-transform: uppercase;\n            letter-spacing: 0.5px;\n            transition: all 0.3s ease;\n        }\n        \n        .cta-button-primary:hover {\n            background: linear-gradient(135deg, #3d1178, #5e1690);\n            transform: translateY(-1px);\n        }\n        \n        /* Article Content */\n        .article-content {\n            padding: 20px;\n            line-height: 1.7;\n        }\n        \n        .content-section {\n            margin-bottom: 35px;\n            clear: both;\n        }\n        \n        .section-headline {\n            font-size: 24px;\n            font-weight: 700;\n            color: #1a1a1a;\n            margin: 35px 0 20px 0;\n            line-height: 1.3;\n        }\n        \n        .story-text {\n            font-size: 16px;\n            line-height: 1.7;\n            margin-bottom: 18px;\n            color: #333;\n            text-align: left;\n        }\n        \n        /* Hero Image Placeholder */\n        .hero-image-placeholder {\n            width: 100%;\n            height: 300px;\n            background-color: #f0f0f0;\n            border: 2px dashed #ccc;\n            margin: 25px 0;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            color: #666;\n            font-size: 14px;\n            text-align: center;\n            border-radius: 8px;\n        }\n        \n        /* Bullet Points */\n        .bullet-list {\n            margin: 20px 0;\n            padding-left: 0;\n        }\n        \n        .bullet-item {\n            font-size: 16px;\n            margin-bottom: 12px;\n            padding-left: 20px;\n            position: relative;\n            line-height: 1.6;\n            color: #333;\n        }\n        \n        .bullet-item::before {\n            content: \"•\";\n            color: #2d5016;\n            font-weight: bold;\n            font-size: 18px;\n            position: absolute;\n            left: 0;\n            top: 0;\n        }\n        \n        /* Quote Blocks */\n        .story-quote {\n            font-size: 18px;\n            font-style: italic;\n            color: #2d5016;\n            margin: 30px 0;\n            padding: 25px;\n            background-color: #f8f9f8;\n            border-left: 4px solid #2d5016;\n            border-radius: 0 8px 8px 0;\n            position: relative;\n        }\n        \n        .story-quote::before {\n            content: '\"';\n            font-size: 48px;\n            color: #2d5016;\n            position: absolute;\n            left: 15px;\n            top: 10px;\n            line-height: 1;\n        }\n        \n        .story-quote::after {\n            content: '\"';\n            font-size: 48px;\n            color: #2d5016;\n            position: absolute;\n            right: 15px;\n            bottom: 10px;\n            line-height: 1;\n        }\n        \n        /* Problem Sections */\n        .problem-section {\n            background-color: #fff3cd;\n            border: 1px solid #ffeaa7;\n            border-radius: 8px;\n            padding: 20px;\n            margin: 25px 0;\n        }\n        \n        .problem-title {\n            font-size: 18px;\n            font-weight: 700;\n            color: #856404;\n            margin-bottom: 10px;\n        }\n        \n        .problem-text {\n            font-size: 16px;\n            color: #856404;\n            line-height: 1.6;\n        }\n        \n        /* Testimonial Cards */\n        .testimonial-card {\n            background-color: #f8f9fa;\n            border: 1px solid #dee2e6;\n            border-radius: 8px;\n            padding: 20px;\n            margin: 25px 0;\n            position: relative;\n        }\n        \n        .testimonial-text {\n            font-size: 16px;\n            line-height: 1.6;\n            color: #333;\n            margin-bottom: 15px;\n            font-style: italic;\n        }\n        \n        .testimonial-author {\n            font-weight: 700;\n            color: #2d5016;\n            font-size: 16px;\n        }\n        \n        /* Green CTA Section */\n        .cta-section {\n            background: linear-gradient(135deg, #4caf50, #66bb6a);\n            color: white;\n            padding: 25px;\n            border-radius: 8px;\n            text-align: center;\n            margin: 30px 0;\n        }\n        \n        .cta-headline {\n            font-size: 20px;\n            font-weight: 700;\n            margin-bottom: 15px;\n            text-transform: uppercase;\n            letter-spacing: 1px;\n        }\n        \n        .cta-button-green {\n            background-color: #ffffff;\n            color: #4caf50;\n            padding: 15px 30px;\n            border: none;\n            border-radius: 6px;\n            font-size: 16px;\n            font-weight: 700;\n            text-decoration: none;\n            display: inline-block;\n            margin: 10px 0;\n            cursor: pointer;\n            text-transform: uppercase;\n            letter-spacing: 0.5px;\n            transition: all 0.3s ease;\n        }\n        \n        .cta-button-green:hover {\n            background-color: #f0f0f0;\n            transform: translateY(-1px);\n        }\n        \n        .cta-subtext {\n            font-size: 14px;\n            margin-top: 10px;\n            opacity: 0.9;\n        }\n        \n        /* Stats/Numbers */\n        .stat-highlight {\n            font-weight: 700;\n            color: #d32f2f;\n            font-size: 18px;\n        }\n        \n        /* Footer Disclaimer */\n        .disclaimer {\n            background-color: #000000;\n            color: #ffffff;\n            padding: 25px;\n            margin-top: 50px;\n            text-align: center;\n            font-size: 12px;\n            line-height: 1.5;\n        }\n        \n        .disclaimer-title {\n            font-weight: 700;\n            margin-bottom: 10px;\n            text-transform: uppercase;\n            letter-spacing: 1px;\n        }\n        \n        .disclaimer-text {\n            opacity: 0.8;\n            line-height: 1.6;\n        }\n        \n        /* Mobile Responsiveness */\n        @media (max-width: 768px) {\n            .product-sidebar {\n                float: none;\n                width: 100%;\n                margin: 20px 0;\n            }\n            \n            .main-headline {\n                font-size: 26px;\n            }\n            \n            .section-headline {\n                font-size: 20px;\n            }\n            \n            .container {\n                padding: 0 15px;\n            }\n            \n            .story-quote {\n                font-size: 16px;\n                padding: 20px;\n            }\n        }\n        \n        @media (max-width: 480px) {\n            .main-headline {\n                font-size: 22px;\n            }\n            \n            .cta-button-primary,\n            .cta-button-green {\n                display: block;\n                width: 100%;\n                margin: 10px 0;\n            }\n        }\n    </style>\n</head>\n<body>\n    <!-- Site Header -->\n    <div class=\"site-header\">\n        HEALTHY CAT INSIDER\n    </div>\n\n    <div class=\"main-container\">\n        <!-- Article Header -->\n        <div class=\"article-header\">\n            <div class=\"container\">\n                <h1 class=\"main-headline\">${data.customHeadline || data.headline}</h1>\n                <div class=\"article-meta\">May 01 2023 at 9:17 am EDT</div>\n                <div class=\"lead-text\">${data.customSubheadline || data.subheadline}</div>\n            </div>\n        </div>\n\n        <!-- Product Sidebar -->\n        <div class=\"product-sidebar\">\n            <div class=\"product-logo\">purrify</div>\n            <div class=\"product-title\">${data.productName}</div>\n            <div class=\"product-image-placeholder\">\n                Product Image<br>\n                Dimensions: 200x150px<br>\n                Code: &lt;img src=\"product-image.jpg\" alt=\"${data.productName}\" width=\"200\" height=\"150\"&gt;\n            </div>\n            <div class=\"product-description\">Get the #1 Vet Recommended Secret For Giving Your Cat Healthy, Hydrated, And Longer Life Span</div>\n            <a href=\"${data.productSiteUrl}\" class=\"cta-button-primary\">Check Availability</a>\n        </div>\n\n        <!-- Main Content -->\n        <div class=\"article-content\">\n            <div class=\"container\">\n                \n                <!-- Hero Image -->\n                <div class=\"hero-image-placeholder\">\n                    Cat with Water Fountain Image<br>\n                    Dimensions: 760x300px<br>\n                    Code: &lt;img src=\"hero-cat-fountain.jpg\" alt=\"Cat using water fountain\" width=\"760\" height=\"300\"&gt;\n                </div>\n\n                <!-- Opening Story -->\n                <div class=\"content-section\">\n                    <p class=\"story-text\">Just 3 months ago, ${data.customerName} was dealing with ${data.mainProblem.toLowerCase()} and nothing seemed to work. She had tried every \"expert\" recommendation, spent hundreds of dollars on solutions that promised results, but still found herself struggling with the same frustrating problem day after day.</p>\n                    \n                    <p class=\"story-text\">If your cat drinks from a water bowl...</p>\n                    <p class=\"story-text\">If you've ever wondered why your cat barely touches their water...</p>\n                    <p class=\"story-text\">If you've noticed something feels \"off\" but can't put your finger on it...</p>\n                    <p class=\"story-text\">Then what I'm about to share could save your cat's life.</p>\n                </div>\n\n                <!-- Problem Introduction -->\n                <div class=\"content-section\">\n                    <p class=\"story-text\">There's a hidden epidemic sweeping through homes right now.</p>\n                    <p class=\"story-text\">It's harming 2 out of every 3 indoor cats.</p>\n                    <p class=\"story-text\">And here's the scary part: The thing you think is keeping your cat healthy might actually be making the problem worse.</p>\n                </div>\n\n                <!-- Key Facts Section -->\n                <h2 class=\"section-headline\">Here's the thing most people don't know:</h2>\n                \n                <div class=\"content-section\">\n                    <div class=\"bullet-list\">\n                        <div class=\"bullet-item\">The Purrify's anti-bacterial coating technology was originally developed for hospitals.</div>\n                        <div class=\"bullet-item\">It costs 10 times more to manufacture than regular fountains.</div>\n                        <div class=\"bullet-item\">That's why you'll never see this technology in pet store fountains.</div>\n                        <div class=\"bullet-item\">They simply can't afford to include it.</div>\n                        <div class=\"bullet-item\">Most fountain companies just buy cheap plastic parts from China and slap their logo on it.</div>\n                    </div>\n                </div>\n\n                <div class=\"content-section\">\n                    <p class=\"story-text\">But the scientists who created Purrify wanted to actually solve the bacterial slime problem once and for all.</p>\n                    <p class=\"story-text\">That's why they licensed the hospital-grade coating technology.</p>\n                    <p class=\"story-text\">It's the same coating used in operating rooms to prevent infections.</p>\n                    <p class=\"story-text\">And it's the ONLY thing that completely stops bacterial slime formation.</p>\n                </div>\n\n                <!-- Problem with Other Solutions -->\n                <h2 class=\"section-headline\">The Problem With \"Trying\" Other Solutions</h2>\n                \n                <div class=\"content-section\">\n                    <p class=\"story-text\">I know what you're thinking: \"Maybe I should try a cheaper fountain first.\"</p>\n                    <p class=\"story-text\">I get it. I thought the same thing.</p>\n                    <p class=\"story-text\">But here's what I learned the hard way:</p>\n                    <p class=\"story-text\"><strong>Every day you wait is another day of damage.</strong></p>\n                    <p class=\"story-text\">Those crystals don't just disappear when you finally get the right fountain.</p>\n                    <p class=\"story-text\">They build up over months and years.</p>\n                </div>\n\n                <!-- Urgency Section -->\n                <div class=\"problem-section\">\n                    <div class=\"problem-title\">Every month of dehydration does damage to kidneys that can never be undone.</div>\n                    <div class=\"problem-text\">I was lucky. We caught Max's blockage in time, and I found the right solution immediately. Your cat might not be so fortunate if you wait.</div>\n                </div>\n\n                <!-- Solution Benefits -->\n                <div class=\"content-section\">\n                    <p class=\"story-text\">The Purrify Water Fountain isn't just about preventing blockages—it's about giving your cat the foundation for a long, healthy life while giving you peace of mind.</p>\n                    <p class=\"story-text\">Right now, Purrify is offering a special discount for cat parents who want to take action before it's too late.</p>\n                </div>\n\n                <!-- Problems with Regular Fountains -->\n                <h2 class=\"section-headline\">Why 99% of \"Water Fountains\" Don't Actually Keep Your Cat Hydrated</h2>\n                \n                <div class=\"content-section\">\n                    <p class=\"story-text\">Dr. Stevens explained something that blew my mind: \"Most pet fountains just push dirty water in circles,\" she said.</p>\n                    <p class=\"story-text\">\"They don't actually solve the bacterial slime problem. In fact, some make it worse.\"</p>\n                </div>\n\n                <!-- Problem Points -->\n                <div class=\"problem-section\">\n                    <div class=\"problem-title\">Problem #1: Cheap fountains grow MORE bacteria</div>\n                    <div class=\"problem-text\">Regular fountains have plastic parts that bacteria love to stick to. Within days, they're actually dirtier than a regular bowl.</div>\n                </div>\n\n                <div class=\"problem-section\">\n                    <div class=\"problem-title\">Problem #2: They don't add oxygen</div>\n                    <div class=\"problem-text\">Moving water isn't enough. Cats are programmed to seek water with high oxygen levels, like mountain streams. Cheap fountains just push stale water around.</div>\n                </div>\n\n                <div class=\"problem-section\">\n                    <div class=\"problem-title\">Problem #3: No special coating</div>\n                    <div class=\"problem-text\">The bacterial slime forms on every surface it touches. Regular fountains have no protection against this.</div>\n                </div>\n\n                <!-- Solution Features -->\n                <h2 class=\"section-headline\">The Revolutionary New Water Fountain That Actually Helps Your Cat Live Longer</h2>\n                \n                <div class=\"content-section\">\n                    <p class=\"story-text\">Unlike every other fountain on the market, the Purrify was designed by cat hydration scientists to solve the THREE core problems:</p>\n                </div>\n\n                <div class=\"content-section\">\n                    <h3 style=\"font-size: 18px; font-weight: 700; color: #2d5016; margin-bottom: 10px;\">1. Anti-Bacterial Coating That Stops Slime Formation</h3>\n                    <p class=\"story-text\">The inside of the Purrify has a special silver-ion coating that kills bacteria on contact. This means the invisible bacterial slime literally cannot form. No other fountain has this coating. They just let bacteria grow and multiply.</p>\n                    \n                    <h3 style=\"font-size: 18px; font-weight: 700; color: #2d5016; margin-bottom: 10px;\">2. Oxygen Infusion System</h3>\n                    <p class=\"story-text\">The Purrify doesn't just move water—it adds tiny oxygen bubbles that make the water taste like a fresh mountain stream. This triggers your cat's ancient \"safe water\" programming. Regular fountains can't do this. They just push old, stale water in circles.</p>\n                    \n                    <h3 style=\"font-size: 18px; font-weight: 700; color: #2d5016; margin-bottom: 10px;\">3. Bio-Safe Materials</h3>\n                    <p class=\"story-text\">Every part that touches water is made from medical-grade materials that bacteria cannot stick to. Cheap fountains use regular plastic that becomes a bacteria breeding ground within days. When I set up the Purrify in Max's usual spot, the difference was immediate.</p>\n                </div>\n\n                <div class=\"story-quote\">\n                    \"${data.mainQuote}\"\n                </div>\n\n                <!-- Customer Story Continuation -->\n                <div class=\"content-section\">\n                    <p class=\"story-text\">That's exactly what ${data.customerName} said after she discovered the real reason why ${data.targetAudience.toLowerCase()} struggle with this problem - and more importantly, the simple solution that fixes it.</p>\n                </div>\n\n                <!-- Testimonials -->\n                <h2 class=\"section-headline\">${data.testimonialsSectionHeading}</h2>\n                \n                <div class=\"testimonial-card\">\n                    <div class=\"testimonial-text\">\"I was skeptical after trying 2 other fountains that didn't work. My 8-year-old Maine Coon, Oliver, had already been to the emergency vet twice for blockages ($4,200 total). My vet mentioned the Purrify specifically and said it was the only one she recommends because of the special coating. Within 3 days of setting it up, I could hear Oliver drinking throughout the day - something I NEVER heard with the other fountains. It's been 8 months now and zero problems. The peace of mind alone is worth every penny. Don't waste time with cheap pet store fountains like I did.\"</div>\n                    <div class=\"testimonial-author\">- Linda</div>\n                </div>\n\n                <div class=\"testimonial-card\">\n                    <div class=\"testimonial-text\">\"My 16-year-old Siamese, Princess, had been getting more and more lethargic. The vet said her kidney values were 'concerning' and she was probably chronically dehydrated. I bought the Purrify after reading about the oxygen bubbles - figured it was worth a try. The change was dramatic. Within 2 weeks she was more active, her coat got shinier, and she stopped having those awful constipation episodes. Her latest bloodwork showed improved kidney function. My vet was amazed and asked me what fountain I was using because she wanted to recommend it to other clients.\"</div>\n                    <div class=\"testimonial-author\">- Patricia</div>\n                </div>\n\n                <!-- Health Impact Section -->\n                <div class=\"content-section\">\n                    <p class=\"story-text\">But here's what shocked me most... Most of these people had tried regular pet fountains first.</p>\n                    <p class=\"story-text\">And failed.</p>\n                    <p class=\"story-text\">\"I bought three different fountains from the pet store. None of them worked. My cat still wouldn't drink. Then I found the ONE fountain that actually solved the bacterial slime problem.</p>\n                    <p class=\"story-text\">\"That's when I realized something important: Not all water fountains are created equal.</p>\n                </div>\n\n                <!-- Scientific Evidence -->\n                <h2 class=\"section-headline\">The Invisible Damage Is Already Happening</h2>\n                \n                <div class=\"content-section\">\n                    <p class=\"story-text\">When cats don't drink enough, their pee becomes like thick syrup.</p>\n                    <p class=\"story-text\">This creates the perfect conditions for crystals to form.</p>\n                    <p class=\"story-text\">These crystals clump together until they completely block everything.</p>\n                    <p class=\"story-text\">That's what almost killed Max. But blockages are just the beginning.</p>\n                </div>\n\n                <div class=\"content-section\">\n                    <p class=\"story-text\">Dr. Stevens showed me studies revealing what really happens:</p>\n                    <div class=\"bullet-list\">\n                        <div class=\"bullet-item\"><span class=\"stat-highlight\">Kidney disease developing silently over years</span></div>\n                        <div class=\"bullet-item\"><span class=\"stat-highlight\">Painful constipation from being constantly dehydrated</span></div>\n                        <div class=\"bullet-item\"><span class=\"stat-highlight\">Shorter lifespans from organs working overtime</span></div>\n                        <div class=\"bullet-item\"><span class=\"stat-highlight\">Higher diabetes risk as the body struggles</span></div>\n                    </div>\n                </div>\n\n                <div class=\"story-quote\">\n                    \"The worst part,\" Dr. Stevens told me, \"is that by the time you see symptoms, <span class=\"stat-highlight\">75% of kidney function is already gone forever.\"</span>\n                </div>\n\n                <!-- Emergency Story -->\n                <h2 class=\"section-headline\">The $3,200 Wake-Up Call That Changed Everything</h2>\n                \n                <div class=\"content-section\">\n                    <p class=\"story-text\">That's why when Max started acting strange on a Tuesday night, I almost ignored it.</p>\n                    <p class=\"story-text\">It was so subtle I nearly missed it.</p>\n                    <p class=\"story-text\">\"Maybe he ate something weird,\" I told David. \"He'll be fine in the morning.\"</p>\n                    <p class=\"story-text\">But by 2 AM, Max was crying in a way that made my blood run cold.</p>\n                    <p class=\"story-text\">When I found him straining in the litter box with nothing coming out, I knew something was terribly wrong.</p>\n                </div>\n\n                <div class=\"content-section\">\n                    <p class=\"story-text\">The emergency vet's words hit me like a truck: <strong>Complete urinary blockage.</strong></p>\n                    <p class=\"story-text\">\"Male cats can die from this in 24-48 hours,\" Dr. Stevens said as her team rushed Max into surgery.</p>\n                    <p class=\"story-text\"><strong>Four hours and $3,200 later,</strong> Max was stable.</p>\n                </div>\n\n                <!-- CTA Section -->\n                <div class=\"cta-section\">\n                    <div class=\"cta-headline\">Apply Discount And Check Availability</div>\n                    <a href=\"${data.productSiteUrl}\" class=\"cta-button-green\">Get Your Discount Now</a>\n                    <div class=\"cta-subtext\">Click the link above to see if Purrify is still offering a 55% discount and free shipping</div>\n                </div>\n\n                <!-- Final Story -->\n                <h2 class=\"section-headline\">${data.resultHeading}</h2>\n                \n                <div class=\"content-section\">\n                    <p class=\"story-text\">Now ${data.customerName} shares her story to help other ${data.targetAudience.toLowerCase()} avoid the same struggles she went through.</p>\n                    \n                    <div class=\"story-quote\">\n                        \"${data.helplessQuote}\"\n                    </div>\n                    \n                    <p class=\"story-text\">\"${data.hopeQuote}\" ${data.customerName} said.</p>\n                    \n                    <p class=\"story-text\">Thousands of ${data.targetAudience.toLowerCase()} are now living better lives thanks to this breakthrough solution.</p>\n                </div>\n\n                <!-- Final CTA -->\n                <div style=\"text-align: center; margin: 40px 0;\">\n                    <a href=\"${data.productSiteUrl}\" class=\"cta-button-green\" style=\"font-size: 18px; padding: 15px 40px;\">Get Your ${data.productName} Now</a>\n                </div>\n                \n                <p class=\"story-text\" style=\"text-align: center; font-style: italic;\">Click the link above to see if ${data.productName} is still offering this one-time discount.</p>\n\n            </div>\n        </div>\n\n        <!-- Footer Disclaimer -->\n        <div class=\"disclaimer\">\n            <div class=\"disclaimer-title\">This is an advertisement and not an actual news article, blog, or consumer protection update</div>\n            <div class=\"disclaimer-text\">The story depicted on this site and the person depicted in the story are not actual news. Rather, this story is based on the results that some people who have used these products have achieved. The results portrayed in the story and in the comments are illustrative, and may not be the results that you achieve with these products. This page could receive compensation for clicks on or purchase of products featured on this site.</div>\n        </div>\n    </div>\n\n    <script>\n        // Add click tracking for CTA buttons\n        document.querySelectorAll('.cta-button-primary, .cta-button-green, .cta-button').forEach(button => {\n            button.addEventListener('click', function(e) {\n                console.log('CTA clicked:', this.textContent);\n                // Track clicks here\n            });\n        });\n        \n        // Smooth scrolling\n        document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {\n            anchor.addEventListener('click', function (e) {\n                e.preventDefault();\n                const target = document.querySelector(this.getAttribute('href'));\n                if (target) {\n                    target.scrollIntoView({\n                        behavior: 'smooth'\n                    });\n                }\n            });\n        });\n    </script>\n</body>\n</html>`;\n\nreturn { json: { htmlContent, data } };"
+      },
+      "id": "4ec5ffa0-8997-488a-8f87-9d371d135b9d",
+      "name": "Generate HTML Content2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1628,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# ANGLE-DRIVEN ADVERTORIAL CONTENT OPTIMIZATION TASK\n\nYour task is to optimize ONLY the text content within HTML advertorials to match a specific narrative angle while making ZERO changes to HTML structure, CSS, classes, styling, or any design elements.\n\n## CORE MISSION:\n\nTransform generic advertorial content into compelling, angle-specific narratives that feel authentic and drive conversions through strategic storytelling that aligns with the provided angle.\n\n## ANGLE-BASED CONTENT OPTIMIZATION:\n\n### 1. ANGLE ALIGNMENT\n- **Match the Narrative Voice:** Adapt all content to reflect the specific angle's tone, perspective, and emotional approach\n- **Maintain Angle Consistency:** Ensure every piece of text content supports and reinforces the chosen angle\n- **Character Development:** Align character background, motivations, and journey with the angle's target audience\n- **Problem-Solution Mapping:** Frame the pain points and solutions through the lens of the specific angle\n\n### 2. AUTHENTIC STORYTELLING WITHIN ANGLE\n- **Eliminate AI-Generated Language:** Remove robotic phrases while staying true to the angle's voice\n- **Enhance Emotional Resonance:** Build genuine emotional connection that matches the angle's emotional core\n- **Specific Detail Integration:** Add believable specifics that support the angle's narrative framework\n- **Natural Flow Creation:** Ensure content flows naturally while maintaining angle consistency\n\n### 3. CHARACTER VOICE ADAPTATION\n- **Name Replacement:** If character is \"Sarah\" or \"Sophie,\" replace with name that fits the angle\n- **Voice Consistency:** Maintain character voice that aligns with the angle's demographic and tone\n- **Background Alignment:** Ensure character details support the angle's target audience\n- **Journey Authenticity:** Make character transformation believable within the angle's context\n\n## WHAT YOU MUST NEVER CHANGE:\n\n### ABSOLUTE NO-TOUCH ZONES:\n- **HTML Tags:** No adding, removing, or modifying any HTML tags\n- **CSS Classes:** No changing class names or attributes\n- **Styling Elements:** No modifications to any style-related code\n- **Structure Elements:** No changing divs, sections, containers, or layout elements\n- **Links and URLs:** No modifying href attributes or link structure\n- **Image Tags:** No changing img tags, src attributes, or alt text\n- **Form Elements:** No modifying input fields, buttons, or form structure\n- **JavaScript:** No adding or modifying any script elements\n- **Responsive Elements:** No modifying breakpoints or mobile-specific code\n\n## CONTENT AREAS TO OPTIMIZE (TEXT ONLY):\n\n### Primary Content Optimization Targets:\n- **Headlines:** Text inside heading tags (keep tags, change only text content)\n- **Story Paragraphs:** All narrative content within paragraph elements\n- **Character Dialogue:** Direct quotes and internal thoughts\n- **Problem Descriptions:** Pain point explanations and agitation content\n- **Solution Explanations:** Product descriptions and benefit statements\n- **Testimonial Content:** Customer quotes and social proof text\n- **Call-to-Action Text:** Button text and urgency messaging\n- **Feature Descriptions:** Product feature explanations and benefits\n\n## ANGLE-SPECIFIC NARRATIVE STRUCTURE:\n\n### Opening Hook (Angle-Driven)\n- Start with scene/emotion that captures the angle's core theme\n- Establish character in situation that reflects angle's target audience\n- Create immediate emotional connection through angle-specific pain point\n- Use language and tone that matches the angle's voice\n\n### Problem Development (Angle-Focused)\n- Present struggles through the angle's unique perspective\n- Show consequences that matter to the angle's target demographic\n- Build tension using language and examples that resonate with the angle\n- Create urgency around problems the angle specifically addresses\n\n### Discovery Journey (Angle-Aligned)\n- Create believable discovery path that fits the angle's narrative\n- Include skepticism and hesitation appropriate to the angle's voice\n- Present solution introduction that aligns with angle's approach\n- Maintain character voice that matches the angle's demographic\n\n### Transformation Story (Angle-Specific Results)\n- Show results that matter to the angle's target audience\n- Use metrics and improvements relevant to the angle's focus\n- Present lifestyle changes that align with the angle's aspirations\n- Create future-pacing that matches the angle's desired outcomes\n\n### Social Proof and Urgency (Angle-Consistent)\n- Include testimonials that speak the angle's language\n- Create urgency messaging that resonates with the angle's audience\n- Present guarantees and risk-reversal in the angle's tone\n- Maintain consistency with the angle's overall narrative approach\n\n## CONTENT AUTHENTICITY REQUIREMENTS:\n\n### Generic Phrases to Eliminate:\n- \"I was skeptical at first, but...\"\n- \"It was a game-changer\"\n- \"I couldn't believe the results\"\n- \"Life-changing experience\"\n- \"Incredible transformation\"\n- \"It seemed too good to be true\"\n\n### Angle-Specific Authenticity Markers:\n- Language patterns that match the angle's voice\n- Specific details relevant to the angle's target audience\n- Emotional responses appropriate to the angle's tone\n- Cultural references and examples that resonate with the angle\n- Problems and solutions framed through the angle's perspective\n- Conversational style that matches the angle's demographic\n\n## WORKFLOW PROCESS:\n\n### Step 1: Angle Analysis\n- Identify the angle's core theme and emotional approach\n- Determine target audience demographics and psychographics\n- Understand the angle's unique perspective on the problem/solution\n- Note the angle's preferred language patterns and tone\n\n### Step 2: Character Adaptation\n- Align character background with angle's target audience\n- Adjust character voice to match angle's communication style\n- Ensure character journey reflects angle's narrative framework\n- Maintain character authenticity within angle constraints\n\n### Step 3: Content Transformation\n- Rewrite all text content to match angle's voice and perspective\n- Ensure every paragraph supports the angle's narrative theme\n- Integrate angle-specific language patterns and references\n- Maintain emotional consistency throughout the content\n\n### Step 4: Flow Optimization\n- Ensure smooth transitions between sections within the angle\n- Verify that problem-solution progression matches angle's approach\n- Check that all content elements reinforce the angle's core message\n- Confirm that call-to-action aligns with angle's motivation strategy\n\n## INPUT REQUIREMENTS:\n\nWhen using this prompt, provide:\n1. **HTML Advertorial:** Complete HTML code needing optimization\n2. **Narrative Angle:** The specific angle/approach to match\n3. **Product Information:** Product name and key details for integration\n\n## OUTPUT REQUIREMENTS:\n\n### Must Deliver:\n- Complete HTML with angle-optimized text content\n- Preserved HTML structure and all design elements\n- Authentic narrative that matches the provided angle\n- Compelling story that drives conversions through angle-specific approach\n- NO commentary, explanations, or additional text outside the HTML\n\n### Content Quality Standards:\n- Every piece of text aligns with the provided angle\n- Character voice feels authentic to the angle's demographic\n- Problem-solution narrative flows naturally within angle framework\n- Emotional journey resonates with angle's target audience\n- All content feels human-written and genuinely engaging\n\n## STRICT CONTENT-ONLY RULES:\n\n1. **TEXT MODIFICATION ONLY:** Change only readable text content between HTML tags\n2. **STRUCTURE PRESERVATION:** Keep every HTML tag, attribute, and class exactly as provided\n3. **ANGLE CONSISTENCY:** Ensure all content aligns with and reinforces the provided angle\n4. **NO DESIGN CHANGES:** Make zero modifications to layout, styling, or visual elements\n5. **PURE HTML OUTPUT:** Provide only the HTML code with optimized text content\n6. **AUTHENTIC VOICE:** Ensure all text sounds genuinely human-written within the angle's voice\n7. **FORMAT**- DO NOT CHANGE, THE STYLING FORMATING OR THINGS THAT WILL TEMPER SINCE I WANT IT DOWNLOADED AS BINARY\n8  **Length:** 900-1,200 words (MAKE SUURE THE SENTENCES ARE VERY SHORT AND PUNCHY)\n9 **BOLDING FOR SCANNABILITY**\nBold these elements:\n- Key statistics and numbers\n- Shocking revelations**\n- Solution benefits and results\n- Urgency/scarcity elements\n- Guarantee terms\n- Call-to-action phrases\n\n##IMPORTANT RULE\n-make sure in the interface I see bolding not \"\"**\"\".\n- I want bolding in BLACK\nOPENING HOOK\n- Start with ONE short, punchy sentence that cuts to core pain/fear\n- Example: \"Max was dying, and it was my fault.\"\n- Should be 6-12 words maximum\n- Must create immediate emotional impact\n\nRMBC STRUCTURE (NON-NEGOTIABLE)\n**Lead:**\n- Call out problem with statistics/urgency\n- Promise solution + tease discovery story\n- Tease unique mechanism (contrarian/surprising)\n- Brief credibility builders\n- Qualify audience\n\n**Background Story:**\n- Customer narrator (NOT company owner)\n- \"I was just like you\" connection\n- Traditional solutions failing\n- Trigger event/crisis moment\n- Search for truth/answers\n\n**Unique Mechanism of Problem:**\n- Surprising/counterintuitive explanation\n- \"99% know this, but the missing 1% is...\"\n- Scientific backing/credibility\n\n**Unique Mechanism of Solution:**\n- Logical connection to problem\n- Specific methodology/technology\n- Why this works when others fail\n\n**Product Buildup + Reveal:**\n- Customer discovered product through research\n- Testing/results story\n- Proof it works\n- Others asking for it\n\n**Close:**\n- Product details and differentiators\n- Social proof/testimonials\n- Urgency/scarcity\n- Guarantee\n- Price justification\n- Multiple CTAs\n- Two-choice close\n\n### 3. HEATH WILCOCK PAS FLOW\n- **Pain:** Identify and agitate the core problem\n- **Agitate:** Make the problem feel urgent and costly\n- **Solution:** Present the discovery and results\n\n### 4. WRITING STYLE REQUIREMENTS\n\n**Sentences:**\n- Keep most sentences under 10 words\n- Use simple words (5th grade level)\n- Break up complex ideas into multiple short sentences\n- Vary sentence length for rhythm\n-**\n**Vocabulary:**\n- Replace complex terms with simple ones\n- If technical terms needed, immediately explain in simple language\n- Use emotional, conversational language\n\n**Paragraphs:**\n- 1-3 sentences maximum\n- Lots of white space\n- Easy to scan\n\n**Headlines:**\n- Create curiosity and promise benefits\n- Avoid starting with \"The\" \n- Make them compelling, not just topic labels\n- Examples: \"How A $3,200 Emergency Saved My Cat's Life\"\nre offering\"\n\n## MASS DESIRES TO TARGET\nFocus on the 3 core desires:\n1. **Prevention of Crisis:** Avoid disaster/emergency/loss\n2. **Peace of Mind:** Eliminate worry and uncertainty  \n3. **Understanding:** Know the real reason behind problems\n\nRemember: You are optimizing content to match a specific narrative angle. Every word of text content must serve the angle's story while treating the HTML structure as completely untouchable. Focus on creating compelling, angle-aligned content that converts through authentic storytelling.\nTARGET SPECIFICATIONS\n\n**Length:** 900-1,200 words\n**Reading Level:** 5th grade maximum\n**Structure:** Customer testimonial story format (NOT company selling)\n**Tone:** Conversational, emotional, urgent but helpful\n\n\n\n## THIS IS THE ANGLE CONTEXT\n{{ $('AI Agent3').item.json.output }}\n\nContext\n{{ $json[\"htmlContent\"] }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert copywriter and HTML optimizer specializing in making advertorials feel authentic, compelling, and conversion-focused. Your task is to review and optimize HTML advertorials to eliminate generic AI language and ensure maximum authenticity and flow.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1848,
+        520
+      ],
+      "id": "06e138d4-988b-4517-9c7d-6412740446e2",
+      "name": "HTML CLEANER1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get HTML string from previous node\nconst rawHtml = $input.first().json.output;\n\n// 2. Replace escaped line breaks with actual newlines\nconst cleanHtml = rawHtml.replace(/\\\\n/g, '\\n');\n\n// 3. Return as binary HTML file\nreturn [\n  {\n    binary: {\n      data: {\n        data: Buffer.from(cleanHtml, 'utf-8').toString('base64'),\n        mimeType: 'text/html',\n        fileName: 'advertorial.html'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        620
+      ],
+      "id": "2d7c66ba-6ea6-448a-acd9-947b8a23d271",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-sonnet-4",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        740
+      ],
+      "id": "d64e0244-06b5-4a15-81aa-aa552b6664a8",
+      "name": "OpenRouter Chat Model4",
+      "credentials": {
+        "openRouterApi": {
+          "id": "heFEr6My8BqwIv2x",
+          "name": "OpenRouter - Keenen New"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Get current date in MM/DD/YYYY format\nconst currentDate = new Date().toLocaleDateString('en-US', {\n    month: '2-digit',\n    day: '2-digit',\n    year: 'numeric'\n});\n\n// Generate the complete HTML advertorial\nconst htmlContent = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Professional Advertorial Template</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        \n        body {\n            font-family: 'Georgia', 'Times New Roman', serif;\n            font-size: 16px;\n            line-height: 1.6;\n            color: #333;\n            background-color: #ffffff;\n        }\n        \n        .container {\n            max-width: 800px;\n            margin: 0 auto;\n            padding: 40px 30px;\n            background-color: #fff;\n        }\n        \n        .header {\n            background-color: #1a237e;\n            color: white;\n            padding: 15px 30px;\n            margin: -40px -30px 40px -30px;\n            font-weight: bold;\n            font-size: 14px;\n            letter-spacing: 1px;\n            text-transform: uppercase;\n        }\n        \n        .main-headline {\n            font-size: 32px;\n            font-weight: bold;\n            color: #000;\n            margin-bottom: 20px;\n            line-height: 1.2;\n            text-align: left;\n        }\n        \n        .subheadline {\n            font-size: 18px;\n            color: #666;\n            font-style: italic;\n            margin-bottom: 30px;\n            line-height: 1.4;\n        }\n        \n        .story-section {\n            margin: 30px 0;\n        }\n        \n        .story-text {\n            font-size: 16px;\n            line-height: 1.7;\n            margin-bottom: 20px;\n            color: #333;\n            text-align: left;\n        }\n        \n        .story-quote {\n            font-size: 20px;\n            font-style: italic;\n            text-align: center;\n            color: #000;\n            margin: 30px 0;\n            padding: 25px;\n            background-color: #f8f8f8;\n            border: 1px solid #ddd;\n            position: relative;\n        }\n        \n        .story-quote::before {\n            content: '\"';\n            font-size: 60px;\n            color: #333;\n            position: absolute;\n            top: -10px;\n            left: 20px;\n            font-family: serif;\n        }\n        \n        .story-quote::after {\n            content: '\"';\n            font-size: 60px;\n            color: #333;\n            position: absolute;\n            bottom: -30px;\n            right: 20px;\n            font-family: serif;\n        }\n        \n        .section-headline {\n            font-size: 24px;\n            color: #000;\n            margin: 40px 0 25px 0;\n            font-weight: bold;\n            line-height: 1.3;\n        }\n        \n        .sidebar-box {\n            float: right;\n            width: 280px;\n            margin: 0 0 20px 30px;\n            border: 2px solid #333;\n            background-color: #fff;\n        }\n        \n        .sidebar-header {\n            background-color: #1a237e;\n            color: white;\n            padding: 12px 15px;\n            text-align: center;\n            font-weight: bold;\n            font-size: 14px;\n        }\n        \n        .sidebar-content {\n            padding: 20px 15px;\n            text-align: center;\n        }\n        \n        .sidebar-headline {\n            font-size: 18px;\n            font-weight: bold;\n            color: #000;\n            margin-bottom: 15px;\n            line-height: 1.3;\n        }\n        \n        .sidebar-text {\n            font-size: 14px;\n            color: #333;\n            margin-bottom: 15px;\n            line-height: 1.5;\n        }\n        \n        .product-image-placeholder {\n            width: 100%;\n            height: 120px;\n            background-color: #f0f0f0;\n            border: 1px solid #ddd;\n            margin: 15px 0;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            color: #666;\n            font-size: 12px;\n        }\n        \n        .cta-button {\n            display: inline-block;\n            padding: 12px 25px;\n            background-color: #1a237e;\n            color: #fff;\n            text-decoration: none;\n            font-size: 14px;\n            font-weight: bold;\n            border: none;\n            cursor: pointer;\n            text-transform: uppercase;\n            letter-spacing: 0.5px;\n            transition: background-color 0.3s;\n            width: 100%;\n            text-align: center;\n        }\n        \n        .cta-button:hover {\n            background-color: #0d1457;\n        }\n        \n        .features-list {\n            margin: 25px 0;\n            padding: 0;\n        }\n        \n        .feature-item {\n            font-size: 16px;\n            margin-bottom: 15px;\n            padding-left: 20px;\n            position: relative;\n            line-height: 1.6;\n            color: #333;\n        }\n        \n        .feature-item::before {\n            content: \"•\";\n            color: #000;\n            font-weight: bold;\n            position: absolute;\n            left: 0;\n            font-size: 20px;\n        }\n        \n        .feature-highlight {\n            font-weight: bold;\n            color: #000;\n        }\n        \n        .testimonial-section {\n            background-color: #f8f8f8;\n            padding: 25px;\n            border: 1px solid #ddd;\n            margin: 30px 0;\n        }\n        \n        .testimonial-text {\n            font-size: 16px;\n            line-height: 1.6;\n            margin-bottom: 15px;\n            color: #333;\n            font-style: italic;\n        }\n        \n        .testimonial-author {\n            font-weight: bold;\n            color: #000;\n            margin-bottom: 5px;\n            font-size: 16px;\n        }\n        \n        .testimonial-title {\n            color: #666;\n            font-size: 14px;\n        }\n        \n        .image-placeholder {\n            width: 100%;\n            height: 300px;\n            background-color: #f0f0f0;\n            border: 1px solid #ddd;\n            margin: 20px 0;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            color: #666;\n            font-size: 14px;\n            text-align: center;\n        }\n        \n        .disclaimer {\n            background-color: #000;\n            color: #fff;\n            padding: 25px;\n            margin-top: 50px;\n            text-align: center;\n        }\n        \n        .disclaimer-text {\n            font-size: 12px;\n            line-height: 1.5;\n            margin-bottom: 15px;\n        }\n        \n        .footer-links {\n            text-align: center;\n            margin-top: 15px;\n        }\n        \n        .footer-links a {\n            color: #fff;\n            text-decoration: underline;\n            margin: 0 10px;\n            font-size: 12px;\n        }\n        \n        .clearfix::after {\n            content: \"\";\n            display: table;\n            clear: both;\n        }\n        \n        @media (max-width: 768px) {\n            .container {\n                padding: 20px 15px;\n            }\n            \n            .sidebar-box {\n                float: none;\n                width: 100%;\n                margin: 20px 0;\n            }\n            \n            .main-headline {\n                font-size: 28px;\n            }\n            \n            .section-headline {\n                font-size: 22px;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <!-- Header -->\n        <div class=\"header\">\n            HEALTHY CAT INSIDER\n        </div>\n\n        <!-- Sidebar Box -->\n        <div class=\"sidebar-box\">\n            <div class=\"sidebar-header\">\n                purrify\n            </div>\n            <div class=\"sidebar-content\">\n                <div class=\"sidebar-headline\">Give Your Cats Years More Healthy Life With Purrify</div>\n                <div class=\"product-image-placeholder\">\n                    Product Image: 250x120px\n                </div>\n                <div class=\"sidebar-text\">Get the #1 Vet Recommended Secret For Giving Your Cat Healthy, Hydrated, And Longer Life Span</div>\n                <a href=\"${data.productSiteUrl || '#'}\" class=\"cta-button\">Check Availability</a>\n            </div>\n        </div>\n\n        <!-- Main Content -->\n        <div class=\"clearfix\">\n            <h1 class=\"main-headline\">Vet Exposes the Shocking Truth: Why 2 Out of 3 Indoor Cats Are Slowly Dying From Dehydration</h1>\n            <p class=\"subheadline\">${currentDate} at 9:17 am EDT</p>\n            \n            <div class=\"story-quote\">\n                By the time you notice symptoms, the damage is often irreversible. This is the most preventable tragedy I see in my practice every single day. —Dr. Sarah Chen\n            </div>\n\n            <h2 class=\"section-headline\">Max was dying, and it was my fault.</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">If your cat drinks from a water bowl...</p>\n                <p class=\"story-text\">If you've ever wondered why your cat barely touches their water...</p>\n                <p class=\"story-text\">If you've noticed something feels \"off\" but can't put your finger on it...</p>\n                <p class=\"story-text\">Then what I'm about to share could save your cat's life.</p>\n                <p class=\"story-text\">There's a hidden epidemic sweeping through homes right now.</p>\n                <p class=\"story-text\">It's harming 2 out of every 3 indoor cats.</p>\n                <p class=\"story-text\">And here's the scary part: The thing you think is keeping your cat healthy might actually be making the problem worse.</p>\n                <p class=\"story-text\">I'm talking about something vets call \"silent dehydration.\"</p>\n                <p class=\"story-text\">But this isn't the obvious kind that sends you rushing to the emergency room.</p>\n                <p class=\"story-text\">This is the sneaky kind that works in shadows for months or years...</p>\n                <p class=\"story-text\">Slowly attacking your cat's kidneys, bladder, and organs...</p>\n                <p class=\"story-text\">While you have no clue anything is wrong.</p>\n            </div>\n\n            <div class=\"image-placeholder\">\n                Main Cat Image: 600x300px\n                (Image of a sick/lethargic cat)\n            </div>\n\n            <h2 class=\"section-headline\">The $3,200 Wake-Up Call That Changed Everything</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">Fresh water every day! Good food! Regular vet visits! I was being a responsible cat parent.</p>\n                <p class=\"story-text\">Or so I thought...</p>\n                <p class=\"story-text\">That's why when Max started acting strange on a Tuesday night, I almost ignored it.</p>\n                <p class=\"story-text\">It was so subtle I nearly missed it.</p>\n                <p class=\"story-text\">Max seemed restless. He kept going to his litter box but nothing happened.</p>\n                <p class=\"story-text\">\"Maybe he ate something weird,\" I told David. \"He'll be fine in the morning.\"</p>\n                <p class=\"story-text\">But by 2 AM, Max was crying in a way that made my blood run cold.</p>\n                <p class=\"story-text\">When I found him straining in the litter box with nothing coming out, I knew something was terribly wrong.</p>\n                <p class=\"story-text\">I hopped in my car and went straight to the emergency vet.</p>\n                <p class=\"story-text\">The emergency vet's words hit me like a truck: <strong>Complete urinary blockage.</strong></p>\n                <p class=\"story-text\">\"Male cats can die from this in 24-48 hours,\" Dr. Stevens said as her team rushed Max into surgery.</p>\n                <p class=\"story-text\"><strong>Four hours and $3,200 later,</strong> Max was stable.</p>\n                <p class=\"story-text\">But then Dr. Stevens said something that changed everything:</p>\n                <p class=\"story-text\"><strong>\"This could have been prevented. The real cause isn't bad luck—it's dehydration.\"</strong></p>\n            </div>\n\n            <h2 class=\"section-headline\">The Shocking Truth About Water Bowls</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">\"But he has fresh water every day!\" I said. \"I change it constantly. How could he be dehydrated?\"</p>\n                <p class=\"story-text\">Dr. Stevens sat down with a look I'd seen before. She'd had this conversation many times.</p>\n                <p class=\"story-text\">\"When did you last actually SEE Max drink water?\" she asked.</p>\n                <p class=\"story-text\">I opened my mouth to answer... then realized with growing horror that I couldn't remember.</p>\n                <p class=\"story-text\">Weeks? Months? Had I ever really paid attention?</p>\n                <p class=\"story-text\">\"This is incredibly common,\" Dr. Stevens said. \"Most loving cat parents have no idea their cats are slowly dehydrating.\"</p>\n                <p class=\"story-text\">That's when she told me the truth no one ever mentions: <strong>Indoor cats are suffering from a dehydration crisis—and water bowls are making it worse.</strong></p>\n                <p class=\"story-text\">Here's what's really happening:</p>\n            </div>\n\n            <h2 class=\"section-headline\">Your Cat's Survival Instincts Are Backfiring</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">Cats evolved in the desert with survival instincts that kept them alive.</p>\n                <p class=\"story-text\">But in our homes, these same instincts are slowly killing them.</p>\n                <p class=\"story-text\">You see, cats can detect things in water that we can't even see. Within hours of filling a bowl, something invisible starts forming.</p>\n                <p class=\"story-text\">Scientists call it your cat's \"survival instinct backfire.\"</p>\n                <p class=\"story-text\">To your cat's super-sensitive nose, even fresh bowl water starts to smell \"dangerous.\"</p>\n                <p class=\"story-text\">So they avoid it.</p>\n                <p class=\"story-text\">This explains why cats will drink from dripping faucets or even dirty puddles outside, but ignore their pristine water dishes.</p>\n                <p class=\"story-text\">Their ancient programming is telling them the bowl water isn't safe.</p>\n            </div>\n\n            <h2 class=\"section-headline\">The Invisible Damage Is Already Happening</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">When cats don't drink enough, their pee becomes like thick syrup.</p>\n                <p class=\"story-text\">This creates the perfect conditions for crystals to form.</p>\n                <p class=\"story-text\">These crystals clump together until they completely block everything.</p>\n                <p class=\"story-text\">That's what almost killed Max. But blockages are just the beginning.</p>\n                <p class=\"story-text\">Dr. Stevens showed me studies revealing what really happens:</p>\n                \n                <div class=\"features-list\">\n                    <div class=\"feature-item\">Kidney disease developing silently over years</div>\n                    <div class=\"feature-item\">Painful constipation from being constantly dehydrated</div>\n                    <div class=\"feature-item\">Shorter lifespans from organs working overtime</div>\n                    <div class=\"feature-item\">Higher diabetes risk as the body struggles</div>\n                </div>\n                \n                <p class=\"story-text\">\"The worst part,\" Dr. Stevens told me, \"is that by the time you see symptoms, <strong>75% of kidney function is already gone forever.</strong>\"</p>\n                <p class=\"story-text\">I felt sick.</p>\n                <p class=\"story-text\">All this time, I thought I was being a good cat parent.</p>\n                <p class=\"story-text\">But I was slowly killing my cat and had no idea.</p>\n            </div>\n\n            <h2 class=\"section-headline\">The Discovery That Changed Everything</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">At 4 AM, while Max slept off the surgery, I did what every panicked cat parent does—I researched frantically.</p>\n                <p class=\"story-text\">Study after study confirmed Dr. Stevens' words:</p>\n                <p class=\"story-text\"><strong>A major study found that 67% of indoor cats show signs of chronic dehydration.</strong></p>\n                <p class=\"story-text\">Research revealed that cats drinking from still water consume 40% less water than they need.</p>\n                <p class=\"story-text\">Scientists discovered that <strong>proper hydration could prevent 89% of urinary problems in male cats.</strong></p>\n                <p class=\"story-text\">The evidence was overwhelming and terrifying.</p>\n                <p class=\"story-text\">But then I found hope in the most unexpected place—cat owner forums where people shared success stories about something called moving water systems.</p>\n                <p class=\"story-text\">Post after post told similar stories:</p>\n                \n                <div class=\"story-quote\">\n                    My cat hadn't drunk from a bowl in months, but with moving water, I hear him drinking multiple times a day.\n                </div>\n                \n                <div class=\"story-quote\">\n                    Two blockages in six months, then zero problems since switching.\n                </div>\n            </div>\n\n            <div class=\"image-placeholder\">\n                Before/After Comparison Image: 600x250px\n                (Split image showing stagnant vs moving water)\n            </div>\n\n            <h2 class=\"section-headline\">Here's the thing most people don't know:</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">The Purrify's anti-bacterial coating technology was originally developed for hospitals.</p>\n                <p class=\"story-text\">It costs 10 times more to manufacture than regular fountains.</p>\n                <p class=\"story-text\">That's why you'll never see this technology in pet store fountains.</p>\n                <p class=\"story-text\">They simply can't afford to include it.</p>\n                <p class=\"story-text\">Most fountain companies just buy cheap plastic parts from China and slap their logo on it.</p>\n                <p class=\"story-text\">But the scientists who created Purrify wanted to actually solve the bacterial slime problem once and for all.</p>\n                <p class=\"story-text\">That's why they licensed the hospital-grade coating technology.</p>\n                <p class=\"story-text\">It's the same coating used in operating rooms to prevent infections.</p>\n                <p class=\"story-text\">And it's the ONLY thing that completely stops bacterial slime formation.</p>\n            </div>\n\n            <h2 class=\"section-headline\">Why 99% of \"Water Fountains\" Don't Actually Keep Your Cat Hydrated</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">But here's what shocked me most... Most of these people had tried regular pet fountains first.</p>\n                <p class=\"story-text\">And failed.</p>\n                <p class=\"story-text\">\"I bought three different fountains from the pet store. None of them worked. My cat still wouldn't drink. Then I found the ONE fountain that actually solved the bacterial slime problem.\"</p>\n                <p class=\"story-text\">\"That's when I realized something important: Not all water fountains are created equal.</p>\n                <p class=\"story-text\">Dr. Stevens explained something that blew my mind: \"Most pet fountains just push dirty water in circles,\" she said.</p>\n                <p class=\"story-text\">\"They don't actually solve the bacterial slime problem. In fact, some make it worse.\"</p>\n                <p class=\"story-text\">She showed me the research:</p>\n                \n                <div class=\"features-list\">\n                    <div class=\"feature-item\"><span class=\"feature-highlight\">Problem #1: Cheap fountains grow MORE bacteria</span> - Regular fountains have plastic parts that bacteria love to stick to. Within days, they're actually dirtier than a regular bowl.</div>\n                    <div class=\"feature-item\"><span class=\"feature-highlight\">Problem #2: They don't add oxygen</span> - Moving water isn't enough. Cats are programmed to seek water with high oxygen levels, like mountain streams. Cheap fountains just push stale water around.</div>\n                    <div class=\"feature-item\"><span class=\"feature-highlight\">Problem #3: No special coating</span> - The bacterial slime forms on every surface it touches. Regular fountains have no protection against this.</div>\n                </div>\n                \n                <p class=\"story-text\">\"That's why I only recommend ONE fountain,\" Dr. Stevens said. \"It's the only one designed by scientists who actually understand the bacterial slime problem.\"</p>\n                <p class=\"story-text\">She was talking about the Purrify Water Fountain.</p>\n            </div>\n\n            <h2 class=\"section-headline\">The Revolutionary New Water Fountain That Actually Helps Your Cat Live Longer</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">Unlike every other fountain on the market, the Purrify was designed by cat hydration scientists to solve the THREE core problems:</p>\n                \n                <h3 style=\"font-size: 18px; font-weight: bold; margin: 25px 0 15px 0;\">1. Anti-Bacterial Coating That Stops Slime Formation</h3>\n                <p class=\"story-text\">The inside of the Purrify has a special silver-ion coating that kills bacteria on contact. This means the invisible bacterial slime literally cannot form. No other fountain has this coating. They just let bacteria grow and multiply.</p>\n                \n                <h3 style=\"font-size: 18px; font-weight: bold; margin: 25px 0 15px 0;\">2. Oxygen Infusion System</h3>\n                <p class=\"story-text\">The Purrify doesn't just move water—it adds tiny oxygen bubbles that make the water taste like a fresh mountain stream. This triggers your cat's ancient \"safe water\" programming. Regular fountains can't do this. They just push old, stale water in circles.</p>\n                \n                <h3 style=\"font-size: 18px; font-weight: bold; margin: 25px 0 15px 0;\">3. Bio-Safe Materials</h3>\n                <p class=\"story-text\">Every part that touches water is made from medical-grade materials that bacteria cannot stick to. Cheap fountains use regular plastic that becomes a bacteria breeding ground within days. When I set up the Purrify in Max's usual spot, the difference was immediate.</p>\n                \n                <p class=\"story-text\"><strong>Within 24 hours, Max was sniffing around the fountain curiously.</strong></p>\n            </div>\n\n            <div class=\"image-placeholder\">\n                Cat Drinking from Fountain: 600x400px\n                (Image showing a cat actively drinking from the Purrify fountain)\n            </div>\n\n            <div class=\"testimonial-section\">\n                <div class=\"testimonial-text\">\"I was skeptical after trying 2 other fountains that didn't work. My 8-year-old Maine Coon, Oliver, had already been to the emergency vet twice for blockages ($6,200 total). My vet mentioned the Purrify specifically and said it was the only one she recommends because of the special coating. Within 3 days of setting it up, I could hear Oliver drinking throughout the day - something I NEVER heard with the other fountains. It's been 8 months now and zero problems. The peace of mind alone is worth every penny. Don't waste time with cheap pet store fountains like I did.\"</div>\n                <div class=\"testimonial-author\">Linda</div>\n            </div>\n\n            <div class=\"testimonial-section\">\n                <div class=\"testimonial-text\">\"My 16-year-old Siamese, Princess, had been getting more and more lethargic. The vet said her kidney values were 'concerning' and she was probably chronically dehydrated. I bought the Purrify after reading about the oxygen bubbles - figured it was worth a try. The change was dramatic. Within 2 weeks she was more active, her coat got shinier, and she stopped having those awful constipation episodes. Her latest bloodwork showed improved kidney function. My vet was amazed and asked me what fountain I was using because she wanted to recommend it to other clients.\"</div>\n                <div class=\"testimonial-author\">Patricia</div>\n            </div>\n\n            <div class=\"testimonial-section\">\n                <div class=\"testimonial-text\">\"After spending over $300 on 4 different fountains that my cats ignored, I was ready to give up. But then my friend showed me this article about bacterial slime and how most fountains actually make it worse. That explained everything! The Purrify was more expensive but I figured if it didn't work, at least I'd know I tried everything. Day one - both my cats were curious. Day three - I heard them drinking. Day seven - I was refilling it twice as often because they were drinking so much! It's been 6 months and my water bowl is now just decoration. Both cats only drink from the Purrify. Worth every penny to finally solve this.\"</div>\n                <div class=\"testimonial-author\">Anise</div>\n            </div>\n\n            <p class=\"story-text\">But here's what shocked me most... Most of these people had tried regular pet fountains first.</p>\n            <p class=\"story-text\">And failed.</p>\n            <p class=\"story-text\">\"I bought three different fountains from the pet store. None of them worked. My cat still wouldn't drink. Then I found the ONE fountain that actually solved the bacterial slime problem.\"</p>\n            <p class=\"story-text\">\"That's when I realized something important: Not all water fountains are created equal.</p>\n\n            <h2 class=\"section-headline\">Every month of dehydration does damage to kidneys that can never be undone.</h2>\n            \n            <div class=\"story-section\">\n                <p class=\"story-text\">I was lucky. We caught Max's blockage in time, and I found the right solution immediately.</p>\n                <p class=\"story-text\">Your cat might not be so fortunate if you wait.</p>\n                <p class=\"story-text\">The Purrify Water Fountain isn't just about preventing blockages—it's about giving your cat the foundation for a long, healthy life while giving you peace of mind.</p>\n                <p class=\"story-text\">Right now, Purrify is offering a special discount for cat parents who want to take action before it's too late.</p>\n                <p class=\"story-text\">But here's the catch:</p>\n                <p class=\"story-text\">Because the anti-bacterial coating is so expensive to manufacture, they can only make limited quantities.</p>\n                <p class=\"story-text\">And because word is spreading among vets like Dr. Stevens, demand is getting crazy.</p>\n                <p class=\"story-text\">Don't let your cat become another statistic.</p>\n                <p class=\"story-text\">Don't wait for that terrifying 3 AM emergency.</p>\n            </div>\n\n            <div style=\"text-align: center; background-color: #90c148; color: white; padding: 20px; margin: 30px 0; border: 2px solid #000;\">\n                <h3 style=\"margin-bottom: 15px; font-size: 20px;\">APPLY DISCOUNT AND CHECK AVAILABILITY</h3>\n                <p style=\"margin-bottom: 20px; font-size: 16px;\">Click the link below to see if Purrify is still offering a 55% discount and free shipping</p>\n                <a href=\"${data.productSiteUrl || '#'}\" class=\"cta-button\" style=\"background-color: #fff; color: #333; border: 2px solid #333; font-weight: bold;\">CHECK AVAILABILITY NOW</a>\n            </div>\n\n            <div class=\"story-section\">\n                <p class=\"story-text\">P.S. Since Max's recovery, I've become passionate about sharing this information. I've told every cat parent I know, and the results speak for themselves.</p>\n            </div>\n\n            <!-- Final disclaimer moved to bottom -->\n        </div>\n\n        <!-- Disclaimer -->\n        <div class=\"disclaimer\">\n            <div class=\"disclaimer-text\">© 2025 Purrify. All Rights Reserved. Privacy Policy Terms of Use</div>\n            <div class=\"disclaimer-text\">THIS IS AN ADVERTISEMENT AND NOT AN ACTUAL NEWS ARTICLE, BLOG, OR CONSUMER PROTECTION UPDATE</div>\n        </div>\n    </div>\n\n    <script>\n        // Add click tracking for CTA buttons\n        document.querySelectorAll('.cta-button').forEach(button => {\n            button.addEventListener('click', function(e) {\n                console.log('CTA clicked:', this.textContent);\n                // Track clicks here\n            });\n        });\n        \n        // Add smooth scrolling for anchor links\n        document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {\n            anchor.addEventListener('click', function (e) {\n                e.preventDefault();\n                const target = document.querySelector(this.getAttribute('href'));\n                if (target) {\n                    target.scrollIntoView({\n                        behavior: 'smooth'\n                    });\n                }\n            });\n        });\n    </script>\n</body>\n</html>`;\n\nreturn { json: { htmlContent, data } };"
+      },
+      "id": "8c6bafd8-b477-4072-8170-a5ddf24e3065",
+      "name": "Generate HTML Content3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1628,
+        1420
+      ]
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-sonnet-4",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        1640
+      ],
+      "id": "82a1ea16-41a3-49a7-9780-6e30b6d18b27",
+      "name": "OpenRouter Chat Model5",
+      "credentials": {
+        "openRouterApi": {
+          "id": "heFEr6My8BqwIv2x",
+          "name": "OpenRouter - Keenen New"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get HTML string from previous node\nconst rawHtml = $input.first().json.output;\n\n// 2. Replace escaped line breaks with actual newlines\nconst cleanHtml = rawHtml.replace(/\\\\n/g, '\\n');\n\n// 3. Return as binary HTML file\nreturn [\n  {\n    binary: {\n      data: {\n        data: Buffer.from(cleanHtml, 'utf-8').toString('base64'),\n        mimeType: 'text/html',\n        fileName: 'advertorial.html'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        1420
+      ],
+      "id": "48167095-99f8-4e6d-a230-31633302fa63",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# ANGLE-DRIVEN ADVERTORIAL CONTENT OPTIMIZATION TASK\n\nYour task is to optimize ONLY the text content within HTML advertorials to match a specific narrative angle while making ZERO changes to HTML structure, CSS, classes, styling, or any design elements.\n\n## CORE MISSION:\n\nTransform generic advertorial content into compelling, angle-specific narratives that feel authentic and drive conversions through strategic storytelling that aligns with the provided angle.\n\n## ANGLE-BASED CONTENT OPTIMIZATION:\n\n### 1. ANGLE ALIGNMENT\n- **Match the Narrative Voice:** Adapt all content to reflect the specific angle's tone, perspective, and emotional approach\n- **Maintain Angle Consistency:** Ensure every piece of text content supports and reinforces the chosen angle\n- **Character Development:** Align character background, motivations, and journey with the angle's target audience\n- **Problem-Solution Mapping:** Frame the pain points and solutions through the lens of the specific angle\n\n### 2. AUTHENTIC STORYTELLING WITHIN ANGLE\n- **Eliminate AI-Generated Language:** Remove robotic phrases while staying true to the angle's voice\n- **Enhance Emotional Resonance:** Build genuine emotional connection that matches the angle's emotional core\n- **Specific Detail Integration:** Add believable specifics that support the angle's narrative framework\n- **Natural Flow Creation:** Ensure content flows naturally while maintaining angle consistency\n\n### 3. CHARACTER VOICE ADAPTATION\n- **Name Replacement:** If character is \"Sarah\" or \"Sophie,\" replace with name that fits the angle\n- **Voice Consistency:** Maintain character voice that aligns with the angle's demographic and tone\n- **Background Alignment:** Ensure character details support the angle's target audience\n- **Journey Authenticity:** Make character transformation believable within the angle's context\n\n## WHAT YOU MUST NEVER CHANGE:\n\n### ABSOLUTE NO-TOUCH ZONES:\n- **HTML Tags:** No adding, removing, or modifying any HTML tags\n- **CSS Classes:** No changing class names or attributes\n- **Styling Elements:** No modifications to any style-related code\n- **Structure Elements:** No changing divs, sections, containers, or layout elements\n- **Links and URLs:** No modifying href attributes or link structure\n- **Image Tags:** No changing img tags, src attributes, or alt text\n- **Form Elements:** No modifying input fields, buttons, or form structure\n- **JavaScript:** No adding or modifying any script elements\n- **Responsive Elements:** No modifying breakpoints or mobile-specific code\n\n## CONTENT AREAS TO OPTIMIZE (TEXT ONLY):\n\n### Primary Content Optimization Targets:\n- **Headlines:** Text inside heading tags (keep tags, change only text content)\n- **Story Paragraphs:** All narrative content within paragraph elements\n- **Character Dialogue:** Direct quotes and internal thoughts\n- **Problem Descriptions:** Pain point explanations and agitation content\n- **Solution Explanations:** Product descriptions and benefit statements\n- **Testimonial Content:** Customer quotes and social proof text\n- **Call-to-Action Text:** Button text and urgency messaging\n- **Feature Descriptions:** Product feature explanations and benefits\n\n## ANGLE-SPECIFIC NARRATIVE STRUCTURE:\n\n### Opening Hook (Angle-Driven)\n- Start with scene/emotion that captures the angle's core theme\n- Establish character in situation that reflects angle's target audience\n- Create immediate emotional connection through angle-specific pain point\n- Use language and tone that matches the angle's voice\n\n### Problem Development (Angle-Focused)\n- Present struggles through the angle's unique perspective\n- Show consequences that matter to the angle's target demographic\n- Build tension using language and examples that resonate with the angle\n- Create urgency around problems the angle specifically addresses\n\n### Discovery Journey (Angle-Aligned)\n- Create believable discovery path that fits the angle's narrative\n- Include skepticism and hesitation appropriate to the angle's voice\n- Present solution introduction that aligns with angle's approach\n- Maintain character voice that matches the angle's demographic\n\n### Transformation Story (Angle-Specific Results)\n- Show results that matter to the angle's target audience\n- Use metrics and improvements relevant to the angle's focus\n- Present lifestyle changes that align with the angle's aspirations\n- Create future-pacing that matches the angle's desired outcomes\n\n### Social Proof and Urgency (Angle-Consistent)\n- Include testimonials that speak the angle's language\n- Create urgency messaging that resonates with the angle's audience\n- Present guarantees and risk-reversal in the angle's tone\n- Maintain consistency with the angle's overall narrative approach\n\n## CONTENT AUTHENTICITY REQUIREMENTS:\n\n### Generic Phrases to Eliminate:\n- \"I was skeptical at first, but...\"\n- \"It was a game-changer\"\n- \"I couldn't believe the results\"\n- \"Life-changing experience\"\n- \"Incredible transformation\"\n- \"It seemed too good to be true\"\n\n### Angle-Specific Authenticity Markers:\n- Language patterns that match the angle's voice\n- Specific details relevant to the angle's target audience\n- Emotional responses appropriate to the angle's tone\n- Cultural references and examples that resonate with the angle\n- Problems and solutions framed through the angle's perspective\n- Conversational style that matches the angle's demographic\n\n## WORKFLOW PROCESS:\n\n### Step 1: Angle Analysis\n- Identify the angle's core theme and emotional approach\n- Determine target audience demographics and psychographics\n- Understand the angle's unique perspective on the problem/solution\n- Note the angle's preferred language patterns and tone\n\n### Step 2: Character Adaptation\n- Align character background with angle's target audience\n- Adjust character voice to match angle's communication style\n- Ensure character journey reflects angle's narrative framework\n- Maintain character authenticity within angle constraints\n\n### Step 3: Content Transformation\n- Rewrite all text content to match angle's voice and perspective\n- Ensure every paragraph supports the angle's narrative theme\n- Integrate angle-specific language patterns and references\n- Maintain emotional consistency throughout the content\n\n### Step 4: Flow Optimization\n- Ensure smooth transitions between sections within the angle\n- Verify that problem-solution progression matches angle's approach\n- Check that all content elements reinforce the angle's core message\n- Confirm that call-to-action aligns with angle's motivation strategy\n\n## INPUT REQUIREMENTS:\n\nWhen using this prompt, provide:\n1. **HTML Advertorial:** Complete HTML code needing optimization\n2. **Narrative Angle:** The specific angle/approach to match\n3. **Product Information:** Product name and key details for integration\n\n## OUTPUT REQUIREMENTS:\n\n### Must Deliver:\n- Complete HTML with angle-optimized text content\n- Preserved HTML structure and all design elements\n- Authentic narrative that matches the provided angle\n- Compelling story that drives conversions through angle-specific approach\n- NO commentary, explanations, or additional text outside the HTML\n\n### Content Quality Standards:\n- Every piece of text aligns with the provided angle\n- Character voice feels authentic to the angle's demographic\n- Problem-solution narrative flows naturally within angle framework\n- Emotional journey resonates with angle's target audience\n- All content feels human-written and genuinely engaging\n\n## STRICT CONTENT-ONLY RULES:\n\n1. **TEXT MODIFICATION ONLY:** Change only readable text content between HTML tags\n2. **STRUCTURE PRESERVATION:** Keep every HTML tag, attribute, and class exactly as provided\n3. **ANGLE CONSISTENCY:** Ensure all content aligns with and reinforces the provided angle\n4. **DESIGN CHANGES:** Make zero modifications to layout, styling, or visual elements only, change the buish color to black on the heading and text only, also the greenish text ONLY.\n5. **PURE HTML OUTPUT:** Provide only the HTML code with optimized text content\n6. **AUTHENTIC VOICE:** Ensure all text sounds genuinely human-written within the angle's voice\n7. **FORMAT**- DO NOT CHANGE, THE STYLING FORMATING OR THINGS THAT WILL TEMPER SINCE I WANT IT DOWNLOADED AS BINARY. THE ONLY NEEDED IS THE SECTION,MOVE IT TO THE RIGHT, NOT TO INTEREFERE  WITH THE WORDS\n8. **CHANGES** - DO NOT MAKE ANY CHANGES ON THE URLS, THEY SHOULD REMAIN EXACTLY AS THEY ARE\n9. ** text length**- MAKE SURE YOU HAVE SHORT SENTENCES  THAT PUNCH. AFTER EVERY SENTENCE SKIP ALINE, NO PARAGRAPH LIKE SENTENCES\n10. 9 **BOLDING FOR SCANNABILITY**\nBold these elements:\n- Key statistics and numbers\n- Shocking revelations**\n- Solution benefits and results\n- Urgency/scarcity elements\n- Guarantee terms\n- Call-to-action phrases\n\n##IMPORTANT RULE\n-make sure in the interface I see bolding not \"\"**\"\".\n- I want bolding in BLACK\n\n\nRemember: You are optimizing content to match a specific narrative angle. Every word of text content must serve the angle's story while treating the HTML structure as completely untouchable. Focus on creating compelling, angle-aligned content that converts through authentic storytelling.\n\n\n\n## AGAIN, DO NOT CHANGE THE URLS\n## THIS IS THE ANGLE CONTEXT\n{{ $('AI Agent3').item.json.output }}\n\n##HTML Context\n{{ $json[\"htmlContent\"] }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an expert copywriter and HTML optimizer specializing in making advertorials feel authentic, compelling, and conversion-focused. Your task is to review and optimize HTML advertorials to eliminate generic AI language and ensure maximum authenticity and flow.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1848,
+        1420
+      ],
+      "id": "49c6eee2-5bcd-4051-a395-5d30ef5eb5f3",
+      "name": "HTML CLEANER4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca7ee4f8-f5b5-4064-861f-4ecf3ade67f3",
+              "name": "output1",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        1020
+      ],
+      "id": "a2769ef4-5d0b-480d-9621-807704fbecea",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "content": "## FORM\n\n#### The details are as follows\n\n- The name of the product\n- the url of the competitors website\n- Your Url, of the product you are selling\n- The screenshot of the demographic",
+        "height": 1400,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3220,
+        420
+      ],
+      "id": "c59006fc-8cc5-4a70-a47d-d78d90b6c941",
+      "name": "Sticky Note13"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Perplexity1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent6": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "ANGLE1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ANGLE1": {
+      "main": [
+        [
+          {
+            "node": "Process Input Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Input Data": {
+      "main": [
+        [
+          {
+            "node": "Generate HTML Content1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate HTML Content2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate HTML Content3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "ANGLE1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate HTML Content1": {
+      "main": [
+        [
+          {
+            "node": "HTML CLEANER",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Perplexity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML CLEANER": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent6",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ANGLE1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        []
+      ]
+    },
+    "OpenRouter Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "HTML CLEANER",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate HTML Content2": {
+      "main": [
+        [
+          {
+            "node": "HTML CLEANER1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML CLEANER1": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "HTML CLEANER1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate HTML Content3": {
+      "main": [
+        [
+          {
+            "node": "HTML CLEANER4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "HTML CLEANER4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML CLEANER4": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a43ff01d-b20e-4398-9539-89ed17866904",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e58926b84ac7142ba48914954a4373cc66dbf8c1d8e5b60a473490fe9e0dec41"
+  },
+  "id": "2K10y9vkQILiFm1x",
+  "tags": [
+    {
+      "createdAt": "2025-06-18T22:58:02.859Z",
+      "updatedAt": "2025-06-18T22:58:02.859Z",
+      "id": "HnRtBOxvMqfZ448d",
+      "name": "marketing"
+    },
+    {
+      "createdAt": "2025-06-18T22:58:02.777Z",
+      "updatedAt": "2025-06-18T22:58:02.777Z",
+      "id": "z86VHnpaZWebvPoY",
+      "name": "advertorial"
+    }
+  ]
+}
